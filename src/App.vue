@@ -1,32 +1,55 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
-  </div>
+  <v-app>
+    <router-view />
+    <Notification />
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+import Vue from "vue";
+import Notification from "@/components/Notification.vue"
+
+export default Vue.extend({
+  name: "App",
+  components: {
+    Notification
+  }
+});
+</script>
+
+<style lang="scss">
+:root {
+  --primary: #0D3882;
+  --primary-alt: #0D3882;
+  --secondary: #00CFC5;
+  --secondary-alt: #00CFC5;
+  --grey: #64748b;
+  --dark: #393939;
+  --dark-alt: #5b5b5b;
+  --light: #fff;
+  --light-alt: #f6f6f6;
+  --sidebar-width: 300px;
 }
 
-nav {
-  padding: 30px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Fira sans", sans-serif;
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
+body {
+  background: var(--light);
+  min-height: 100vh;
+  width: 100%;
 }
 
-nav a.router-link-exact-active {
-  color: #42b983;
+a {
+  color: var(--primary) !important;
+}
+
+.btn-primary {
+  background-color: var(--primary) !important;
+  color: var(--light) !important;
 }
 </style>

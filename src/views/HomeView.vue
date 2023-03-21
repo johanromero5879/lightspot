@@ -1,18 +1,32 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div class="app-container">
+    <Sidebar />
+    <router-view />
   </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
-import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+<script>
+import Vue from "vue";
+import Sidebar from '@/components/SideBar.vue';
 
 export default Vue.extend({
-  name: 'HomeView',
   components: {
-    HelloWorld,
-  },
-});
+    Sidebar
+  }
+})
 </script>
+
+<style lang="scss" scoped>
+.app-container {
+  display: flex;
+  main {
+    flex: 1 1 0;
+    padding: 2rem;
+    background-color: var(--light-alt);
+    min-height: 100vh;
+    @media (max-width: 1024px) {
+      padding-left: 6rem;
+    }
+  }
+}
+</style>
