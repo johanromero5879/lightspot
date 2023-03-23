@@ -7,7 +7,7 @@
 
 <script>
 import Vue from "vue";
-import { mapGetters, mapActions } from "vuex"
+import { mapActions, mapGetters } from "vuex"
 
 import Sidebar from '@/components/SideBar.vue';
 
@@ -16,17 +16,19 @@ export default Vue.extend({
     Sidebar
   },
   computed: {
-    ...mapGetters("auth", ["isAuthenticated"]),
-    ...mapGetters("user", ["currentUser"])
+    ...mapGetters("auth", ["isAuthenticated"])
   },
   methods: {
-    ...mapActions("auth", ["logout"]),
-    ...mapActions("user", ["fetchCurrentUser"])
+    ...mapActions("user", ["fetchCurrentUser"]),
+    ...mapActions("auth", ["fetchToken", "startTokenTimer"]),
   },
   created() {
-    if (this.isAuthenticated) {
-      this.fetchCurrentUser()
+    const setup = async () => {
+      await this.fetchToken()
+      this.startTokenTimer()
+      await this.fetchCurrentUser()
     }
+    setup()
   }
 })
 </script>

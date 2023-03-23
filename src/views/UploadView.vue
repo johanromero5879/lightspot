@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 import DropFile from "../components/DropFile.vue";
 import { isFloat, isInt } from "@/utils/type-checker";
@@ -38,6 +38,16 @@ import { isFloat, isInt } from "@/utils/type-checker";
 export default {
   components: {
     DropFile,
+  },
+  computed: {
+    ...mapGetters("auth", ["isAuthenticated"])
+  },
+  watch: {
+    isAuthenticated(newState, oldState) {
+      if (!newState) {
+        this.$router.push("/login")
+      }
+    }
   },
   data() {
     return {
@@ -54,7 +64,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions("notificationsModule", ["showNotification"]),
+    ...mapActions("notifier", ["showNotification"]),
     clear() {
       this.file = null;
       this.flashes = [];

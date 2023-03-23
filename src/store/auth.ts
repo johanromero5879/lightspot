@@ -10,14 +10,12 @@ import { getToken, saveToken, clearToken } from "@/services/token";
 
 export interface State {
   token: Token | null;
-  tokenTimer: number | null;
 }
 
 export const auth: Module<State, RootState> = {
   namespaced: true,
   state: {
     token: getToken(),
-    tokenTimer: null
   },
   getters: {
     isAuthenticated: (state) => !!state.token,
@@ -27,10 +25,6 @@ export const auth: Module<State, RootState> = {
     setToken(state, token: Token | null) {
       state.token = token;
     },
-
-    setTokenTimer(state, timer: number) {
-        state.tokenTimer = timer;
-    },
   },
   actions: {
     async login({ commit, dispatch }, user: Auth) {
@@ -38,15 +32,18 @@ export const auth: Module<State, RootState> = {
 
       saveToken(token);
       commit("setToken", token);
-      dispatch("startTokenTimer")
+      dispatch("startTokenTimer");
     },
 
-    async logout({ commit, dispatch }) {
+    async logout({ commit }) {
       await logout();
+
+      // dispatch("clearTokenTimer");
 
       clearToken();
       commit("setToken", null);
-      dispatch("clearTokenTimer")
+
+      commit("user/setCurrentUser", null, { root: true });
     },
 
     async fetchToken({ commit, dispatch }) {
@@ -55,27 +52,28 @@ export const auth: Module<State, RootState> = {
 
         saveToken(token);
         commit("setToken", token);
-      } catch (err) {
+
+        dispatch("startTokenTimer")
+      } catch (err: any) {
         dispatch("logout");
       }
     },
 
     startTokenTimer({ dispatch }) {
-        const expireIn = 15 * 60 * 1000 // 15 minutes
-        const timer = setInterval(() => {
-            dispatch("fetchToken")
-        }, expireIn - 5000)
-        dispatch("setTokenTimer", timer)
+      const expireIn = 15 * 60 * 1000; // 15 minutes
+      setTimeout(() => {
+        dispatch("fetchToken");
+      }, expireIn - 5000);
     },
 
-    setTokenTimer({ commit }, timer) {
-        commit("setTokenTimer", timer)
-    },
+    // setTokenTimer({ commit }, timer) {
+    //   commit("setTokenTimer", timer);
+    // },
 
-    clearTokenTimer({ state, commit }) {
-        if (state.tokenTimer) clearInterval(state.tokenTimer)
+    // clearTokenTimer({ state, commit }) {
+    //   if (state.tokenTimer) clearInterval(state.tokenTimer);
 
-        commit("setTokenTimer", null)
-    }
+    //   commit("setTokenTimer", null);
+    // },
   },
 };

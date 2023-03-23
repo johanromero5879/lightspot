@@ -22,9 +22,14 @@ export const user: Module<State, RootState> = {
     }
   },
   actions: {
-    async fetchCurrentUser({ commit }) {
+    async fetchCurrentUser({ commit, dispatch }) {
+      try {
         const user = await getCurrentUser()
         commit("setCurrentUser", user);
+      } catch (err) {
+        dispatch("auth/logout", null, { root: true });
+      }
+        
     },
   },
   

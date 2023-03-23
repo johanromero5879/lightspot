@@ -8,11 +8,20 @@ import UploadView from '../views/UploadView.vue'
 
 Vue.use(VueRouter)
 
-const authenticationGuard = (to: Route, from: Route, next: NavigationGuardNext) => {
+const navGuard = (to: Route, from: Route, next: NavigationGuardNext, permission: string | null) => {
   const isAuthenticated = store.getters["auth/isAuthenticated"]
+  const user = store.getters["user/currentUser"]
 
   if (!isAuthenticated) return next("/login")
-  next()
+
+  
+  if (!!permission && user?.role.permissions.includes(permission)) {
+    return next()
+  } else {
+    return next("/login")
+  }
+
+  
 }
 
 const routes: Array<RouteConfig> = [
@@ -25,7 +34,7 @@ const routes: Array<RouteConfig> = [
         path: "/upload", 
         name: "upload", 
         component: UploadView,
-        beforeEnter: authenticationGuard
+        beforeEnter: (to, from, next) => navGuard(to, from, next, "upload_flashes_data")
       }
     ]
   },
