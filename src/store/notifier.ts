@@ -10,7 +10,7 @@ interface State {
   notifications: Notification[];
 }
 
-export const notificationsModule: Module<State, RootState> = {
+export const notifier: Module<State, RootState> = {
   namespaced: true, 
   state: {
     notifications: []

@@ -75,10 +75,11 @@ export default {
     },
   },  
   methods: {
-    ...mapActions("authModule", ["login", "logout"]),
+    ...mapActions("auth", ["login"]),
     async handleSubmit() {
       try {
         await this.login(this.user)
+        this.$router.push("/")
       } catch (err) {
         console.error(err.message)
       }

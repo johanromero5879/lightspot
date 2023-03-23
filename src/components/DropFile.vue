@@ -26,7 +26,7 @@
         dragover: false,
     }),
     methods: {
-      ...mapActions("notificationsModule", ["showNotification"]),
+      ...mapActions("notifier", ["showNotification"]),
       toggleActive() {
         this.dragover = !this.dragover;
       },

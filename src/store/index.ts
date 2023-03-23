@@ -1,14 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import { notificationsModule } from "@/store/notification"
-import { authModule } from "@/store/auth"
+import { notifier } from "@/store/notifier"
+import { auth } from "@/store/auth"
+import { user } from "@/store/user"
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    notificationsModule,
-    authModule
+    notifier,
+    auth,
+    user
   }
 })

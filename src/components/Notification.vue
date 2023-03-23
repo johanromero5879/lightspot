@@ -32,10 +32,10 @@ import { mapGetters, mapMutations } from "vuex";
 
 export default Vue.extend({
   computed: {
-    ...mapGetters("notificationsModule", ["notifications"]),
+    ...mapGetters("notifier", ["notifications"]),
   },
   methods: {
-    ...mapMutations("notificationsModule", ["removeNotification"]),
+    ...mapMutations("notifier", ["removeNotification"]),
   }
 });
 </script>
