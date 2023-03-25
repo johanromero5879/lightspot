@@ -2,17 +2,20 @@
   <v-app>
     <router-view />
     <Notification />
+    <Dialog />
   </v-app>
 </template>
 
 <script>
 import Vue from "vue";
 import Notification from "@/components/Notification.vue"
+import Dialog from "@/components/Dialog.vue"
 
 export default Vue.extend({
   name: "App",
   components: {
-    Notification
+    Notification,
+    Dialog
   }
 });
 </script>
