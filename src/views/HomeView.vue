@@ -16,16 +16,17 @@ export default Vue.extend({
     Sidebar
   },
   computed: {
-    ...mapGetters("auth", ["isAuthenticated"])
+    ...mapGetters("auth", ["timer"])
   },
   methods: {
     ...mapActions("user", ["fetchCurrentUser"]),
-    ...mapActions("auth", ["fetchToken", "startTokenTimer"]),
+    ...mapActions("auth", ["fetchToken", "logout"]),
   },
   created() {
     const setup = async () => {
-      await this.fetchToken()
-      this.startTokenTimer()
+      if (!this.timer) {
+        await this.fetchToken()
+      }
       await this.fetchCurrentUser()
     }
     setup()

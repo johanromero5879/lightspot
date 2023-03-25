@@ -11,17 +11,13 @@ Vue.use(VueRouter)
 const navGuard = (to: Route, from: Route, next: NavigationGuardNext, permission: string | null) => {
   const isAuthenticated = store.getters["auth/isAuthenticated"]
   const user = store.getters["user/currentUser"]
-
-  if (!isAuthenticated) return next("/login")
-
   
-  if (!!permission && user?.role.permissions.includes(permission)) {
+  if (isAuthenticated && user?.role.permissions.includes(permission)) {
     return next()
   } else {
-    return next("/login")
+    return next("/")
   }
 
-  
 }
 
 const routes: Array<RouteConfig> = [

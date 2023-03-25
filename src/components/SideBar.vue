@@ -43,7 +43,7 @@ export default Vue.extend({
   data() {
     return {
       items: [
-        { title: "Dasbhoard", icon: "mdi-view-dashboard", to: "/home" },
+        { title: "Dasbhoard", icon: "mdi-view-dashboard", to: "/" },
         {
           title: "Upload",
           icon: "mdi-cloud-upload-outline",
