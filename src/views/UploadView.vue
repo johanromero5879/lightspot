@@ -15,25 +15,40 @@
     </v-stepper>
     <DropFile
       :allowedExtensions="['txt', 'loc']"
-      @fileUploaded="readFile($event)"
+      @uploadedFiles="readFile($event[0])"
     />
+    <div class="loader" v-if="step === 3">
+      <span> Please wait! Process locations might take 5-10 minutes. </span>
+      <v-progress-linear
+        color="cyan"
+        class="progress-bar"
+        indeterminate
+        rounded
+        height="6"
+      ></v-progress-linear>
+    </div>
+
+    <v-btn v-if="step === 2" class="btn-primary" @click="openConfirmDialog">
+      Submit
+    </v-btn>
+
     <v-data-table
       :headers="headers"
       :items="flashes"
       hide-default-footer
       disable-sort
       no-data-text="No data from any file"
+      loading-text="Loading... Please wait"
     >
-  
-  </v-data-table>
+    </v-data-table>
   </main>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-import DropFile from "../components/DropFile.vue";
-import { isFloat, isInt } from "@/utils/type-checker";
+import DropFile from "@/components/DropFile.vue";
+import { uploadFile, processFilePreview } from "@/services/flash";
 
 export default {
   components: {
@@ -43,11 +58,11 @@ export default {
     ...mapGetters("auth", ["isAuthenticated"])
   },
   watch: {
-    isAuthenticated(newState, oldState) {
+    isAuthenticated(newState) {
       if (!newState) {
-        this.$router.push("/login")
+        this.$router.push("/");
       }
-    }
+    },
   },
   data() {
     return {
@@ -65,72 +80,59 @@ export default {
   },
   methods: {
     ...mapActions("notifier", ["showNotification"]),
+    ...mapActions("dialog", ["openDialog"]),
     clear() {
       this.file = null;
       this.flashes = [];
-      this.setStep(1)
+      this.resetStep();
     },
-    setStep(step) {
-      this.step = step
+    nextStep() {
+      if (this.step <= 2) this.step += 1;
     },
-    readFile(file) {
-      this.file = file;
-      const reader = new FileReader();
-
-      reader.addEventListener("loadend", () => {
-        const content = reader.result.trim();
-        const records = content.split("\n");
-
-        this.processRecords(records);
+    resetStep() {
+      this.step = 1;
+    },
+    openConfirmDialog() {
+      this.openDialog({
+        title: "Upload file",
+        message: `The server is going to filter all records to save only those from Colombia.
+                  Depending of the file size this might take several minutes to process.`,
+        confirm: this.handleSubmit,
       });
-
-      reader.readAsText(this.file, "utf-8");
     },
-
-    processRecords(records) {
+    async handleSubmit() {
+      this.nextStep();
       try {
-        const flashes = [];
+        const { processed_records } = await uploadFile(this.file);
 
-        for (let [index, record] of records.entries()) {
-          if (index === 9) break;
-          const flash = this.processRecord(record);
-          flashes.push(flash);
-        }
+        this.openDialog({
+          title: "Uploaded file successfully",
+          message: `Processed records: ${processed_records}`,
+          confirm: null,
+        });
+      } catch (err) {
+        this.showNotification({
+          message: err.message,
+          type: "error",
+        });
+      } finally {
+        this.clear();
+      }
+    },
+    async readFile(file) {
+      this.file = file;
+      try {
+        const flashes = await processFilePreview(this.file);
+
         this.flashes = flashes;
-        this.setStep(2)
+        this.nextStep();
       } catch (err) {
         this.clear();
         this.showNotification({
-          message: "File format not valid",
+          message: err.message,
           type: "error",
         });
       }
-    },
-
-    processRecord(record) {
-      const [date, time, lat, lon, residual_fit_error, stations] =
-        record.split(",");
-      const row = [date, time, lat, lon, residual_fit_error, stations];
-
-      if (row.some((column) => column === undefined)) {
-        throw new Error("File format not valid");
-      }
-
-      const flash = {
-        occurrence_date: `${date} ${time}`,
-        lat: isFloat(lat) ? parseFloat(lat).toFixed(4) : null,
-        lon: isFloat(lon) ? parseFloat(lon).toFixed(4) : null,
-        residual_fit_error: isFloat(residual_fit_error)
-          ? parseFloat(residual_fit_error).toFixed(1)
-          : null,
-        stations: isInt(stations) ? parseInt(stations) : null,
-      };
-
-      if (Object.values(flash).some((value) => value === null)) {
-        throw new Error("File format not valid");
-      }
-
-      return flash;
     },
   },
 };
@@ -141,5 +143,13 @@ main {
   display: flex;
   flex-direction: column;
   row-gap: 1rem;
+}
+
+.loader {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+  align-items: center;
+  text-align: center;
 }
 </style>

@@ -20,6 +20,8 @@
   import Vue from "vue";
   import { mapActions } from "vuex";
 
+  import { bytes_to_mb } from "@/utils/file-size-converter"
+
   export default Vue.extend({
     name: "UploadFile",
     data: () => ({
@@ -34,33 +36,62 @@
         this.dragover = false;
         const files = e.dataTransfer?.files || e.target?.files
         
-        if (files && files.length > 1) {
+        if (!this.muliple && files.length > 1) {
             this.showNotification({
-              message: "Only one file can be uploaded at time", 
+              message: "Multifile upload is not allowed", 
               type: "error"
             })
             return
         }
         
-        
-        if (!this.validateExtension(files[0])){
+        if (!this.validateExtension(files)){
             this.showNotification({
               message: "Extension not allowed", 
               type: "error"
             })
             return
         }
-        
-        this.$emit("fileUploaded", files[0]);
+
+        if (!this.validateSize(files)){
+            this.showNotification({
+              message: "Max size allowed per file is 3MB", 
+              type: "error"
+            })
+            return
+        }
+
+        this.$emit("uploadedFiles", files);
       },
-      validateExtension(file) {
-        const extension = file.name.split(".").at(-1)
+      validateExtension(files) {
+        for (let file of files) {
+          const extension = file.name.split(".").at(-1)
+          const allowed = this.allowedExtensions.includes(extension)
+          
+          if (!allowed) return false
+        }
         
-        return this.allowedExtensions.includes(extension)
+        return true
+      },
+      validateSize(files) {
+        for (let file of files) {
+          const fileSize = bytes_to_mb(file.size)
+          
+          if (fileSize > this.maxSize) return false
+        }
+        
+        return true
       },
     },
     props: {
-        allowedExtensions: Array
+        allowedExtensions: Array,
+        maxSize: {
+          type: Number,
+          default: 3
+        },
+        multiple: {
+          type: Boolean,
+          default: false
+        }
     }
   });
   </script>
