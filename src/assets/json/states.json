@@ -1,0 +1,200 @@
+[
+  {
+    "country": "Colombia",
+    "state": "Amazonas",
+    "lat": -1.4403,
+    "lon": -71.1628
+  },
+  {
+    "country": "Colombia",
+    "state": "Antioquia",
+    "lat": 6.5742,
+    "lon": -75.8255
+  },
+  {
+    "country": "Colombia",
+    "state": "Arauca",
+    "lat": 7.0905,
+    "lon": -70.7615
+  },
+  {
+    "country": "Colombia",
+    "state": "Atlántico",
+    "lat": 10.9126,
+    "lon": -74.7647
+  },
+  {
+    "country": "Colombia",
+    "state": "Bogotá D.C",
+    "lat": 4.6534649,
+    "lon": -74.0836453
+  },
+  {
+    "country": "Colombia",
+    "state": "Bolívar",
+    "lat": 9.2314,
+    "lon": -75.0152
+  },
+  {
+    "country": "Colombia",
+    "state": "Boyacá",
+    "lat": 5.4547,
+    "lon": -73.362
+  },
+  {
+    "country": "Colombia",
+    "state": "Caldas",
+    "lat": 5.2983,
+    "lon": -75.2479
+  },
+  {
+    "country": "Colombia",
+    "state": "Caquetá",
+    "lat": 0.8693,
+    "lon": -74.7562
+  },
+  {
+    "country": "Colombia",
+    "state": "Casanare",
+    "lat": 5.7589,
+    "lon": -71.5724
+  },
+  {
+    "country": "Colombia",
+    "state": "Cauca",
+    "lat": 2.6617,
+    "lon": -76.9341
+  },
+  {
+    "country": "Colombia",
+    "state": "Cesar",
+    "lat": 9.3722,
+    "lon": -73.7224
+  },
+  {
+    "country": "Colombia",
+    "state": "Chocó",
+    "lat": 5.1444,
+    "lon": -76.8093
+  },
+  {
+    "country": "Colombia",
+    "state": "Córdoba",
+    "lat": 8.0549,
+    "lon": -75.374
+  },
+  {
+    "country": "Colombia",
+    "state": "Cundinamarca",
+    "lat": 4.9246,
+    "lon": -74.389
+  },
+  {
+    "country": "Colombia",
+    "state": "Guainía",
+    "lat": 3.9333,
+    "lon": -67.9167
+  },
+  {
+    "country": "Colombia",
+    "state": "Guaviare",
+    "lat": 2.5706,
+    "lon": -72.6417
+  },
+  {
+    "country": "Colombia",
+    "state": "Huila",
+    "lat": 2.5357,
+    "lon": -75.5277
+  },
+  {
+    "country": "Colombia",
+    "state": "La Guajira",
+    "lat": 11.5503,
+    "lon": -72.9169
+  },
+  {
+    "country": "Colombia",
+    "state": "Magdalena",
+    "lat": 10.4523,
+    "lon": -74.225
+  },
+  {
+    "country": "Colombia",
+    "state": "Meta",
+    "lat": 3.445,
+    "lon": -73.6639
+  },
+  {
+    "country": "Colombia",
+    "state": "Nariño",
+    "lat": 1.3536,
+    "lon": -77.0511
+  },
+  {
+    "country": "Colombia",
+    "state": "Norte de Santander",
+    "lat": 7.9463,
+    "lon": -72.8989
+  },
+  {
+    "country": "Colombia",
+    "state": "Putumayo",
+    "lat": 0.4356,
+    "lon": -76.5003
+  },
+  {
+    "country": "Colombia",
+    "state": "Quindío",
+    "lat": 4.4721,
+    "lon": -75.6814
+  },
+  {
+    "country": "Colombia",
+    "state": "Risaralda",
+    "lat": 5.1706,
+    "lon": -75.9337
+  },
+  {
+    "country": "Colombia",
+    "state": "San Andrés y Providencia",
+    "lat": 12.5472,
+    "lon": -81.707
+  },
+  {
+    "country": "Colombia",
+    "state": "Santander",
+    "lat": 6.7438,
+    "lon": -73.0087
+  },
+  {
+    "country": "Colombia",
+    "state": "Sucre",
+    "lat": 9.1647,
+    "lon": -75.1291
+  },
+  {
+    "country": "Colombia",
+    "state": "Tolima",
+    "lat": 4.0706,
+    "lon": -75.1517
+  },
+  {
+    "country": "Colombia",
+    "state": "Valle del Cauca",
+    "lat": 4.1932,
+    "lon": -76.1096
+  },
+  {
+    "country": "Colombia",
+    "state": "Vaupés",
+    "lat": 0.8625,
+    "lon": -70.8117
+  },
+  {
+    "country": "Colombia",
+    "state": "Vichada",
+    "lat": 4.4238,
+    "lon": -69.2872
+  }
+]

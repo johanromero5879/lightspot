@@ -2,21 +2,23 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig, NavigationGuardNext, Route } from 'vue-router'
 
 import store from "@/store"
-import HomeView from '../views/HomeView.vue'
-import LoginView from '../views/LoginView.vue'
-import UploadView from '../views/UploadView.vue'
+import HomeView from '@/views/HomeView.vue'
+import LoginView from '@/views/LoginView.vue'
+import UploadView from '@/views/UploadView.vue'
+import InsightsView from '@/views/InsightsView.vue'
 
 Vue.use(VueRouter)
 
-const navGuard = (to: Route, from: Route, next: NavigationGuardNext, permission: string | null) => {
+const navGuard = (to: Route, from: Route, next: NavigationGuardNext, scope: string | null = null) => {
   const isAuthenticated = store.getters["auth/isAuthenticated"]
   const user = store.getters["user/currentUser"]
   
-  if (isAuthenticated && user?.role.permissions.includes(permission)) {
-    return next()
-  } else {
-    return next("/")
-  }
+  if (!isAuthenticated) return next("/")
+  if (!scope) return next()
+
+  if (user?.role.permissions.includes(scope)) return next()
+
+  return next("/")
 
 }
 
@@ -31,7 +33,12 @@ const routes: Array<RouteConfig> = [
         name: "upload", 
         component: UploadView,
         beforeEnter: (to, from, next) => navGuard(to, from, next, "upload_flashes_data")
-      }
+      },
+      { 
+        path: "/insights", 
+        name: "insights", 
+        component: InsightsView
+      },
     ]
   },
   {
@@ -40,7 +47,7 @@ const routes: Array<RouteConfig> = [
     component: LoginView,
     beforeEnter: (to, from, next) => {
       const isAuthenticated = store.getters["auth/isAuthenticated"]
-
+      
       if (isAuthenticated) return next("/")
       next()
     }
