@@ -18,7 +18,7 @@
       @uploadedFiles="readFile($event[0])"
     />
     <div class="loader" v-if="step === 3">
-      <span> Please wait! Process locations might take 5-10 minutes. </span>
+      <span> Please wait! Process locations might take 8-12 minutes. </span>
       <v-progress-linear
         color="cyan"
         class="progress-bar"

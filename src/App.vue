@@ -23,12 +23,12 @@ export default Vue.extend({
 <style lang="scss">
 :root {
   --primary: #0D3882;
-  --primary-alt: #0D3882;
+  --primary-alt: #1559CF;
   --secondary: #00CFC5;
-  --secondary-alt: #00CFC5;
-  --grey: #64748b;
+  --secondary-alt: #00DBD0;
+  --grey: #8297B5;
   --dark: #393939;
-  --dark-alt: #5b5b5b;
+  --dark-alt: #4F4F4F;
   --light: #fff;
   --light-alt: #f6f6f6;
   --sidebar-width: 300px;
@@ -42,9 +42,13 @@ export default Vue.extend({
 }
 
 body {
-  background: var(--light);
+  background-color: var(--light-alt) !important;
   min-height: 100vh;
   width: 100%;
+}
+
+.v-application {
+  background-color: var(--light-alt) !important;
 }
 
 a {

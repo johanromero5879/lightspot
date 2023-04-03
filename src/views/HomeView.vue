@@ -28,6 +28,7 @@ export default Vue.extend({
         await this.fetchToken()
       }
       await this.fetchCurrentUser()
+      // await this.logout()
     }
     setup()
   }
@@ -40,8 +41,8 @@ export default Vue.extend({
   main {
     flex: 1 1 0;
     padding: 2rem;
-    background-color: var(--light-alt);
-    min-height: 100vh;
+    background-color: inherit;
+    width: 100%;
     @media (max-width: 1024px) {
       padding-left: 6rem;
     }

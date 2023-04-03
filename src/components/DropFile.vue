@@ -35,6 +35,8 @@
       selectFile(e) {
         this.dragover = false;
         const files = e.dataTransfer?.files || e.target?.files
+
+        if (files.length == 0) return
         
         if (!this.muliple && files.length > 1) {
             this.showNotification({

@@ -51,6 +51,7 @@ export default Vue.extend({
           scope: "upload_flashes_data",
         },
         { title: "User", icon: "mdi-account-plus", to: "/user" },
+        { title: "Insights", icon: "mdi-chart-bar-stacked", to: "/insights" },
         { title: "Reports", icon: "mdi-chart-bar-stacked", to: "/reports" },
       ],
     };

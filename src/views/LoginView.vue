@@ -42,7 +42,7 @@
           hide-delimiters
           show-arrows-on-hover
           class="carousel"
-          height="600"
+          height="520"
         >
           <v-carousel-item
             v-for="(slide, i) in slides"
