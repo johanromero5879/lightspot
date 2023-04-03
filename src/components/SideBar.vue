@@ -50,6 +50,7 @@ export default Vue.extend({
           to: "/upload",
           scope: "upload_flashes_data",
         },
+        { title: "Map", icon: "mdi-map-search", to: "/map" },
         { title: "User", icon: "mdi-account-plus", to: "/user" },
         { title: "Insights", icon: "mdi-chart-bar-stacked", to: "/insights" },
         { title: "Reports", icon: "mdi-chart-bar-stacked", to: "/reports" },
