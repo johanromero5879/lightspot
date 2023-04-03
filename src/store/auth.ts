@@ -5,7 +5,7 @@ import { RootState } from "@/store/types";
 import { Token } from "@/models/token";
 import { Auth } from "@/models/auth";
 
-import { authenticateUser, logout, refreshToken } from "@/services/auth";
+import { authenticateUser, logout as logOut, refreshToken } from "@/services/auth";
 
 export interface State {
   token: Token | null;
@@ -40,7 +40,7 @@ export const auth: Module<State, RootState> = {
     },
 
     async logout({ commit }) {
-      await logout();
+      await logOut();
 
       commit("setToken", null);
       commit("setTimer", false);

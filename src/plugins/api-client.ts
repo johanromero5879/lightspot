@@ -2,11 +2,12 @@ import axios from "axios"
 
 import store from "@/store"
 
-axios.defaults.baseURL = process.env.VUE_APP_API_URL
-axios.defaults.withCredentials = true
+const apiClient = axios.create({
+    baseURL: process.env.VUE_APP_API_URL,
+    withCredentials: true
+})
 
-
-axios.interceptors.request.use(config => {
+apiClient.interceptors.request.use(config => {
     const token = store.getters["auth/token"]
 
     if (token) {
@@ -20,4 +21,4 @@ axios.interceptors.request.use(config => {
     return config
 })
 
-export default axios
+export default apiClient

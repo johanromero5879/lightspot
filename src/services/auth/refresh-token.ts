@@ -1,11 +1,11 @@
 import { AxiosError } from "axios"
-import axios from "@/plugins/axios"
+import apiClient from "@/plugins/api-client"
 
 import { Token } from "@/models/token"
 
 export const refreshToken = async (): Promise<Token> => {
     try {
-        const { data } = await axios.post("/auth/token/refresh")
+        const { data } = await apiClient.post("/auth/token/refresh")
 
         return data
       } catch (err: unknown) {

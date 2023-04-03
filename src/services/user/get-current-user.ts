@@ -1,11 +1,11 @@
 import { AxiosError } from "axios";
-import axios from "@/plugins/axios";
+import apiClient from "@/plugins/api-client";
 
 import { User } from "@/models/user";
 
 export const getCurrentUser = async (): Promise<User> => {
   try {
-    const { data } = await axios.get("/users/me");
+    const { data } = await apiClient.get("/users/me");
     return data;
   } catch (err: unknown) {
     if (err instanceof AxiosError) {

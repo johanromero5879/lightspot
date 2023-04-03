@@ -1,5 +1,5 @@
-import axios from "@/plugins/axios"
+import apiClient from "@/plugins/api-client"
 
 export const logout = async () => {
-    await axios.delete("/auth/token")
+    await apiClient.delete("/auth/token")
 }
