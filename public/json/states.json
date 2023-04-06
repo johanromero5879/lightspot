@@ -25,7 +25,8 @@
   },
   {
     "country": "Colombia",
-    "state": "Bogotá D.C",
+    "state": "Bogotá",
+    "district": true,
     "lat": 4.6534649,
     "lon": -74.0836453
   },
