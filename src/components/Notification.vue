@@ -6,8 +6,8 @@
       :value="true"
       :color="notification.type"
       :timeout="5000"
-      :right="!$vuetify.breakpoint.mobile"
-      :bottom="!$vuetify.breakpoint.mobile"
+      :right="!isMobile"
+      bottom
       @input="removeNotification(notification)"
     >
       {{ notification.message }}
@@ -26,13 +26,16 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from "vue";
 import { mapGetters, mapMutations } from "vuex";
 
 export default Vue.extend({
   computed: {
     ...mapGetters("notifier", ["notifications"]),
+    isMobile() {
+      return this.$vuetify.breakpoint.mobile
+    }
   },
   methods: {
     ...mapMutations("notifier", ["removeNotification"]),

@@ -8,30 +8,30 @@
 
 <script>
 import Vue from "vue";
-import Notification from "@/components/Notification.vue"
-import Dialog from "@/components/Dialog.vue"
+import Notification from "@/components/Notification.vue";
+import Dialog from "@/components/Dialog.vue";
 
 export default Vue.extend({
   name: "App",
   components: {
     Notification,
-    Dialog
-  }
+    Dialog,
+  },
 });
 </script>
 
 <style lang="scss">
 :root {
-  --primary: #0D3882;
-  --primary-alt: #1559CF;
-  --secondary: #00CFC5;
-  --secondary-alt: #00DBD0;
-  --grey: #8297B5;
+  --primary: #0d3882;
+  --primary-alt: #1559cf;
+  --secondary: #00cfc5;
+  --secondary-alt: #00dbd0;
+  --grey: #8297b5;
   --dark: #393939;
-  --dark-alt: #4F4F4F;
+  --dark-alt: #4f4f4f;
   --light: #fff;
   --light-alt: #f6f6f6;
-  --sidebar-width: 300px;
+  --sidebar-width: 250px;
 }
 
 * {
@@ -47,16 +47,24 @@ body {
   width: 100%;
 }
 
-.v-application {
-  background-color: var(--light-alt) !important;
+i {
+  cursor: pointer;
 }
 
 a {
   color: var(--primary) !important;
 }
 
+.v-application {
+  background-color: var(--light-alt) !important;
+}
+
 .btn-primary {
   background-color: var(--primary) !important;
   color: var(--light) !important;
+}
+
+.btn-secondary {
+  background-color: var(--secondary) !important;
 }
 </style>
