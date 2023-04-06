@@ -17,13 +17,13 @@
                     @click="close"
                     v-if="isConfirm"
                 >
-                    Cancel
+                    Cancelar
                 </v-btn>
                 <v-btn 
                     class="btn-primary"
                     @click="confirm"
                 >
-                    Agree
+                    Ok
                 </v-btn>
             </v-card-actions>
         </v-card>

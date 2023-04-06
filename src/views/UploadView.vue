@@ -1,44 +1,51 @@
 <template>
-  <main>
+  <main class="container">
     <v-stepper alt-labels v-model="step">
       <v-stepper-header>
-        <v-stepper-step step="1"> Upload file </v-stepper-step>
+        <v-stepper-step step="1">Cargar archivo</v-stepper-step>
 
         <v-divider></v-divider>
 
-        <v-stepper-step step="2"> Preview </v-stepper-step>
+        <v-stepper-step step="2">Previsualización</v-stepper-step>
 
         <v-divider></v-divider>
 
-        <v-stepper-step step="3"> Submit </v-stepper-step>
+        <v-stepper-step step="3">Enviar</v-stepper-step>
       </v-stepper-header>
     </v-stepper>
     <DropFile
-      :allowedExtensions="['txt', 'loc']"
+      :allowedExtensions="['txt', 'loc', 'csv']"
       @uploadedFiles="readFile($event[0])"
     />
-    <div class="loader" v-if="step === 3">
-      <span> Please wait! Process locations might take 8-12 minutes. </span>
-      <v-progress-linear
-        color="cyan"
-        class="progress-bar"
-        indeterminate
-        rounded
-        height="6"
-      ></v-progress-linear>
-    </div>
-
-    <v-btn v-if="step === 2" class="btn-primary" @click="openConfirmDialog">
-      Submit
-    </v-btn>
-
+    <template v-if="step === 1">
+      <small>
+        El archivo subido debe tener el formato de datos que maneja la WWLLN.
+      </small>
+    </template>
+    <template v-if="step === 2">
+      <small>
+        Esta viendo una previsualización de {{ flashes.length }}/{{ total }}
+        registros. Tenga en cuenta que el servidor validará el archivo por
+        completo.
+      </small>
+      <small>
+        Los registros subidos se irán almacenando en una base de datos.
+      </small>
+      <v-btn class="btn-primary" @click="openConfirmDialog">
+        Cargar archivo
+      </v-btn>
+    </template>
+    <Loader
+      v-if="step === 3"
+      message="¡Espera! Procesar ubicaciones puede tomar 8-12 minutos"
+    />
     <v-data-table
       :headers="headers"
       :items="flashes"
       hide-default-footer
       disable-sort
-      no-data-text="No data from any file"
-      loading-text="Loading... Please wait"
+      no-data-text="Ningún archivo ha sido cargado"
+      loading-text="Cargando..."
     >
     </v-data-table>
   </main>
@@ -47,15 +54,17 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
+import Loader from "@/components/Loader.vue";
 import DropFile from "@/components/DropFile.vue";
 import { uploadFile, processFilePreview } from "@/services/flash";
 
 export default {
   components: {
+    Loader,
     DropFile,
   },
   computed: {
-    ...mapGetters("auth", ["isAuthenticated"])
+    ...mapGetters("auth", ["isAuthenticated"]),
   },
   watch: {
     isAuthenticated(newState) {
@@ -69,13 +78,14 @@ export default {
       step: 1,
       file: null,
       headers: [
-        { text: "Occurrence date", value: "occurrence_date" },
-        { text: "Latitude", value: "lat" },
-        { text: "Longitude", value: "lon" },
-        { text: "Residual fit error", value: "residual_fit_error" },
-        { text: "Stations", value: "stations" },
+        { text: "Fecha de ocurrencia", value: "occurrence_date" },
+        { text: "Latitud", value: "lat" },
+        { text: "Longitud", value: "lon" },
+        { text: "Error residual de ajuste", value: "residual_fit_error" },
+        { text: "Estaciones", value: "stations" },
       ],
       flashes: [],
+      total: 0,
     };
   },
   methods: {
@@ -84,30 +94,44 @@ export default {
     clear() {
       this.file = null;
       this.flashes = [];
+      this.total = 0;
       this.resetStep();
     },
-    nextStep() {
-      if (this.step <= 2) this.step += 1;
+    setStep(step) {
+      if (step === "upload") {
+        this.step = 1;
+        return;
+      }
+
+      if (step === "preview") {
+        this.step = 2;
+        return;
+      }
+
+      if (step === "submit") {
+        this.step = 3;
+        return;
+      }
     },
     resetStep() {
       this.step = 1;
     },
     openConfirmDialog() {
       this.openDialog({
-        title: "Upload file",
-        message: `The server is going to filter all records to save only those from Colombia.
-                  Depending of the file size this might take several minutes to process.`,
+        title: "Cargar archivo",
+        message: `El servidor va a filtrar y guardar solo los registros de Colombia. 
+                  Dependiendo de la cantidad que haya, puede tardar varios minutos en cargar los datos.`,
         confirm: this.handleSubmit,
       });
     },
     async handleSubmit() {
-      this.nextStep();
+      this.setStep("submit");
       try {
         const { processed_records } = await uploadFile(this.file);
 
         this.openDialog({
-          title: "Uploaded file successfully",
-          message: `Processed records: ${processed_records}`,
+          title: "Archivo cargado exitosamente",
+          message: `Registros procesados: ${processed_records}`,
           confirm: null,
         });
       } catch (err) {
@@ -122,10 +146,11 @@ export default {
     async readFile(file) {
       this.file = file;
       try {
-        const flashes = await processFilePreview(this.file);
+        const [flashes, total] = await processFilePreview(this.file);
 
         this.flashes = flashes;
-        this.nextStep();
+        this.total = total;
+        this.setStep("preview");
       } catch (err) {
         this.clear();
         this.showNotification({
@@ -139,17 +164,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-main {
+.container {
   display: flex;
   flex-direction: column;
   row-gap: 1rem;
-}
 
-.loader {
-  display: flex;
-  flex-direction: column;
-  row-gap: 0.5rem;
-  align-items: center;
-  text-align: center;
+  .list {
+    background-color: var(--light-alt);
+  }
 }
 </style>

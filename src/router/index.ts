@@ -31,31 +31,30 @@ const navGuard = (
 const routes: Array<RouteConfig> = [
   {
     path: "/",
-    name: "home",
     component: HomeView,
     children: [
       {
-        path: "/upload",
+        path: "",
+        name: "insights",
+        component: InsightsView,
+      },
+      {
+        path: "upload",
         name: "upload",
         component: UploadView,
         beforeEnter: (to, from, next) =>
           navGuard(to, from, next, "upload_flashes_data"),
       },
       {
-        path: "/map",
-        name: "Map",
+        path: "map",
+        name: "map",
         component: MapView,
       },
       {
-        path: "/user",
-        name: "User",
+        path: "user",
+        name: "user",
         component: UserView,
-      },
-      {
-        path: "/insights",
-        name: "insights",
-        component: InsightsView,
-      },
+      }
     ],
   },
   {

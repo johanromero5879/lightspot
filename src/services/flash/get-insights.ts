@@ -2,25 +2,41 @@ import { AxiosError } from "axios";
 import apiClient from "@/plugins/api-client";
 
 import { FlashQuery } from "@/services/flash";
-import { getCurrentUTCOffset } from "@/utils/utc-checker"
 
-export const getInsights = async (query: FlashQuery) => {
+export const getInsights = async ({
+  start_date,
+  end_date,
+  state,
+  city,
+  utc_offset,
+}: FlashQuery) => {
   try {
+    const query = {
+      start_date,
+      end_date,
+      country: "CO",
+      utc_offset,
+    } as FlashQuery;
+
+    if (!!state) {
+      query["state"] = state;
+    }
+
+    if (!!city) {
+      query["city"] = city;
+    }
+
     const { data } = await apiClient.get("/flashes/insights", {
-      params: {
-        ...query,
-        country: "CO",
-        utc_offset: getCurrentUTCOffset(),
-      },
+      params: query,
     });
 
     return data;
   } catch (err: unknown) {
     if (err instanceof AxiosError) {
-      const { detail } = err.response?.data;
-      throw new Error(detail);
+      const data = err.response?.data;
+      if (data?.detail) throw new Error(data.detail);
     }
 
-    throw new Error("Failed to get flashes");
+    throw new Error("Error al buscar registros de flashes");
   }
 };

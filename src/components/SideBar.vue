@@ -43,17 +43,17 @@ export default Vue.extend({
   data() {
     return {
       items: [
-        { title: "Dasbhoard", icon: "mdi-view-dashboard", to: "/" },
+        { title: "Dashboard", icon: "mdi-view-dashboard", to: "/" },
+        { title: "Mapa", icon: "mdi-map-search", to: "/map" },
+        { title: "Reportes", icon: "mdi-chart-bar-stacked", to: "/reports" },
         {
-          title: "Upload",
+          title: "Cargar",
           icon: "mdi-cloud-upload-outline",
           to: "/upload",
           scope: "upload_flashes_data",
         },
-        { title: "Map", icon: "mdi-map-search", to: "/map" },
-        { title: "User", icon: "mdi-account-plus", to: "/user" },
-        { title: "Insights", icon: "mdi-chart-bar-stacked", to: "/insights" },
-        { title: "Reports", icon: "mdi-chart-bar-stacked", to: "/reports" },
+        { title: "Usuarios", icon: "mdi-account-plus", to: "/user" },
+        
       ],
     };
   },

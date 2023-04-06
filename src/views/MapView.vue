@@ -1,68 +1,13 @@
 <template>
-  <main>
-    <div class="column">
-      <v-card class="FiltroUbi" height="30">
-        <v-card-title class="blue-grey darken-1 py-3 white--text"
-          >Filters</v-card-title
-        >
-        <v-card-text class="blue-grey lighten-3">
-          <v-row>
-            <v-col>
-              <v-combobox
-                v-model="state"
-                :items="listStates"
-                placeholder= "Select"
-                label="Departament"
-                @change="selectState($event)"
-              ></v-combobox>
-            </v-col>
-            <v-col>
-              <v-combobox
-                v-model="city"
-                :items="listCities"
-                 placeholder= "Select"
-                label="Municipality"
-                 @change="selectCity($event)"
-              ></v-combobox>
-            </v-col>
-            <v-col>
-              <v-menu
-                ref="menu"
-                v-model="menu"
-                :close-on-content-click="false"
-                :return-value.sync="date"
-                transition="scale-transition"
-                offset-y
-                min-width="auto"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="date"
-                      label="Date range"
-                      prepend-icon="mdi-calendar"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                <v-date-picker v-model="date" no-title scrollable range>
-                  <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="menu = false">
-                    Cancel
-                  </v-btn>
-                  <v-btn text color="primary" @click="$refs.menu.save(date)">
-                    OK
-                  </v-btn>
-                </v-date-picker>
-              </v-menu>
-            </v-col>
-            <v-col>
-              <v-btn depressed color="primary" @click="loadFlashes"> Search</v-btn>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-card>
-      <l-map class="map" @update:zoom="handleZoom" ref="map" >
+  <main class="container">
+    <Filters
+      v-model="loading"
+      @stateSelected="onStateChange($event)"
+      @citySelected="onCityChange($event)"
+      @submitted="onSubmitFilter($event)"
+    />
+    <div class="map">
+      <l-map ref="map" @update:zoom="handleZoom">
         <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
         <l-circle
           v-for="(marker, index) in markers"
@@ -70,7 +15,6 @@
           :lat-lng="marker"
           :radius="circle.radius"
           :color="circle.color"
-          
         />
       </l-map>
     </div>
@@ -79,12 +23,12 @@
 
 <script>
 import { LMap, LTileLayer, LMarker, LCircle } from "vue2-leaflet";
-import { findFlashes } from "@/services/flash/find-flashes";
-import { findStates } from "@/services/location/find-states";
-import { findCities } from "@/services/location/find-cities";
+import Filters from "@/components/Filters.vue";
+import { findFlashes } from "@/services/flash";
 
 export default {
   components: {
+    Filters,
     LMap,
     LTileLayer,
     LMarker,
@@ -92,61 +36,46 @@ export default {
   },
   methods: {
     handleZoom(zoom) {
-      if (zoom>=10){
-        this.circle.radius=50
-      }else{
-       this.circle.radius=4 
+      if (zoom >= 10) {
+        this.circle.radius = 50;
+      } else {
+        this.circle.radius = 4;
       }
-
-      console.log(zoom);
     },
-    
-    async loadFlashes() {
-      const query = {
-        start_date: this.date[0],
-        end_date: this.date[1],
-        state: this.state,
-        city: this.city,
-      };
-      let flashes = await findFlashes(query);
-      console.log(flashes);
+
+    async loadFlashes(filter) {
+      this.markers = [];
+      const flashes = await findFlashes(filter);
+
       this.markers = flashes.map((flash) => [flash.lat, flash.lon]);
     },
-    async selectState(name) {
-      this.city = "";
-      const cities = await findCities(name);
-      this.cities = cities;
-      this.listCities= cities.map(({city})=> city);
-      const state = this.states.filter((s)=> s.state==name)[0];
-      this.flyTo(state.lat,state.lon,8);
+
+    onStateChange({ lat, lon, district }) {
+      const zoom = !district ? 8 : 12;
+
+      this.flyTo(lat, lon, zoom);
     },
-    async selectCity(name) {
-      const city = this.cities.filter((c)=> c.city==name)[0];
-      this.flyTo(city.lat,city.lon,12);
+
+    onCityChange({ lat, lon }) {
+      this.flyTo(lat, lon, 12);
     },
-    flyTo(lat,lon,zoom=7){
-      this.$refs.map.mapObject.flyTo([lat,lon],zoom);
-    }
-  }, 
-   async created() {
-    const states = await findStates();
-    this.states = states;
-    this.listStates= states.map(state=> state.state)
+
+    async onSubmitFilter(filter) {
+      this.loading = true;
+      await this.loadFlashes(filter);
+      this.loading = false;
+    },
+
+    async flyTo(lat, lon, zoom = 7) {
+      this.$refs.map.mapObject.flyTo([lat, lon], zoom);
+    },
   },
-mounted(){
-  //Colombia
-this.flyTo(4.099917,-72.9088133,5);
-},
+  mounted() {
+    //Colombia
+    this.flyTo(4.099917, -72.9088133, 6);
+  },
   data: () => ({
-    map: null,
-    menu: false,
-    date: null,
-    listStates: [],
-    states: [],
-    state: "",
-    listCities: [],
-    cities: [],
-    city: "",
+    loading: false,
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     attribution:
       '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -158,14 +87,26 @@ this.flyTo(4.099917,-72.9088133,5);
   }),
 };
 </script>
-<style scoped>
-.map {
-  z-index: 0 !important;
-  height: 400px;
+<style lang="scss" scoped>
+@import "src/main.scss";
+
+.container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 1.5rem;
+
+  @include up-to-tablet-landscape {
+    display: flex;
+    flex-direction: column;
+  }
 }
-.column {
-  display: flex;
-  flex-direction: column;
-  gap: 130px;
+.map {
+  border-radius: 5px;
+  width: 100%;
+  z-index: 0 !important;
+
+  @include up-to-tablet-landscape {
+    height: 400px;
+  }
 }
 </style>

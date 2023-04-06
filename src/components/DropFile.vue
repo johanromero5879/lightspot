@@ -7,11 +7,11 @@
       :class="{ 'active-dropzone': dragover }"
       class="dropzone"
     >
-      <v-icon>mdi-file-upload</v-icon>
-      <span> Drag and drop file here to upload</span>
-      <small> (or) </small>
+      <v-icon large>mdi-file-upload</v-icon>
+      <span> Arrastra y suelta aquí un archivo</span>
+      <small> (o) </small>
   
-      <label for="dropfile" class="dropfile-label">Select file to upload </label>
+      <label for="dropfile" class="dropfile-label">Seleccionar desde el dispositivo</label>
       <input type="file" id="dropfile" @change="selectFile($event)" />
     </div>
   </template>
@@ -40,7 +40,7 @@
         
         if (!this.muliple && files.length > 1) {
             this.showNotification({
-              message: "Multifile upload is not allowed", 
+              message: "No se pueden subir varios archivos", 
               type: "error"
             })
             return
@@ -48,7 +48,7 @@
         
         if (!this.validateExtension(files)){
             this.showNotification({
-              message: "Extension not allowed", 
+              message: "Extension no permitida", 
               type: "error"
             })
             return
@@ -56,7 +56,7 @@
 
         if (!this.validateSize(files)){
             this.showNotification({
-              message: "Max size allowed per file is 3MB", 
+              message: "Tamaño limite por archivo es de 3MB", 
               type: "error"
             })
             return

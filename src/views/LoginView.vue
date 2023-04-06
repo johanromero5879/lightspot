@@ -12,7 +12,7 @@
           ></v-img>
           <h2>Login</h2>
           <v-text-field
-            label="Email"
+            label="Correo"
             outlined
             :dense="mobile"
             color="blue"
@@ -21,7 +21,7 @@
             v-model="user.email"
           />
           <v-text-field
-            label="Password"
+            label="Contraseña"
             outlined
             :dense="mobile"
             color="blue"
@@ -30,10 +30,10 @@
             prepend-inner-icon="mdi-lock"
             v-model="user.password"
           />
-          <v-btn class="btn-primary" block type="submit">Login</v-btn>
+          <v-btn class="btn-primary" block type="submit">Acceder</v-btn>
           <div class="link">
             <router-link to="/reset-password"
-              >Forgot your password?</router-link
+              >¿Ha olvidado su contraseña?</router-link
             >
           </div>
         </v-form>

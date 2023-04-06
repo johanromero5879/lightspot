@@ -10,14 +10,14 @@ export const processFilePreview = async (file: File) => {
   const lines = content.split("\n");
   const flashes = processLines(lines);
 
-  return flashes;
+  return [flashes, lines.length];
 };
 
 const processLines = (lines: string[]): BaseFlash[] => {
   const flashes = [];
 
   for (let [index, line] of lines.entries()) {
-    if (index === 9) break;
+    if (index === 10) break;
 
     const flash = processLine(line, index + 1);
     flashes.push(flash);
@@ -31,27 +31,27 @@ const processLine = (line: string, num: number): BaseFlash => {
   const row = [date, time, lat, lon, residual_fit_error, stations];
 
   if (row.some((column) => column === undefined))
-    throw new Error("File format not valid");
+    throw new Error("Formato de archivo no válido");
 
   const datetime = `${date.trim()} ${time.trim()}`;
   const occurrence_date = moment.utc(datetime, "YYYY/MM/DD HH:mm:ss.SSSSSS", true);
 
   if (!occurrence_date.isValid())
     throw new Error(
-      `occurrence_date is not valid in line ${num}: ${date} ${time}`
+      `La fecha de ocurrencia no es válida en la línea ${num}`
     );
 
-  if (!isFloat(lat)) throw new Error(`lat is not valid in line ${num}: ${lat}`);
+  if (!isFloat(lat)) throw new Error(`La latitud no es válida en la línea ${num}`);
 
-  if (!isFloat(lon)) throw new Error(`lon is not valid in line ${num}: ${lon}`);
+  if (!isFloat(lon)) throw new Error(`La longitud no es válida en la línea ${num}`);
 
-  if (!isFloat(residual_fit_error))
+  if (!isFloat(residual_fit_error) && !isInt(residual_fit_error))
     throw new Error(
-      `residual_fit_error is not valid in line ${num}: ${residual_fit_error}`
+      `El error de ajuste residual no es válida en la línea ${num}`
     );
     
   if (!isInt(stations))
-    throw new Error(`stations is not valid in line ${num}: ${stations}`);
+    throw new Error(`El número de estaciones no es válido en la línea ${num}`);
 
   const flash = {
     occurrence_date: datetime,

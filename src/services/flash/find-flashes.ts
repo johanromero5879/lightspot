@@ -1,32 +1,40 @@
 import { AxiosError } from "axios";
 import apiClient from "@/plugins/api-client";
+import { FlashQuery } from "@/services/flash"
 
-interface Query { 
-  start_date:string
-  end_date:string
-  country:string
-  state:string
-  city:string
-}
-
-export const findFlashes = async ({start_date,end_date,state,city}:Query) => {
+export const findFlashes = async ({
+  start_date,
+  end_date,
+  state,
+  city,
+  utc_offset,
+}: FlashQuery) => {
   try {
-    const { data } = await apiClient.get("/flashes",{
-        params:{
-            start_date,
-            end_date,
-            country:"CO",
-            state,
-            city
-        }
-    })
+    const query = {
+      start_date,
+      end_date,
+      country: "CO",
+      utc_offset,
+    } as FlashQuery;
+
+    if (!!state) {
+      query["state"] = state;
+    }
+
+    if (!!city) {
+      query["city"] = city;
+    }
+
+    const { data } = await apiClient.get("/flashes", {
+      params: query,
+    });
     return data;
   } catch (err: unknown) {
     if (err instanceof AxiosError) {
-      const { detail } = err.response?.data;
-      throw new Error(detail);
+      const data = err.response?.data;
+      if(data?.detail) throw new Error(data.detail)
     }
 
-    throw new Error("Not Found");
+    throw new Error("No se encontraron flashes");
   }
 };
