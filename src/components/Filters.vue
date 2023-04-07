@@ -310,7 +310,7 @@ export default {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     row-gap: 0;
-    column-gap: 0.5rem;
+    column-gap: 1rem;
   }
 
   @include up-to-tablet-portrait {

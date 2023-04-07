@@ -40,22 +40,24 @@ export default {
       type: Array,
       required: true,
     },
+    title: {
+      type: String,
+      required: true,
+    },
     backgroundColor: {
       type: String,
-      default: "rgb(0, 207, 197, 0.5)"
     },
     borderColor: {
       type: String,
-      default: "rgb(0, 207, 197, 0.8)"
     },
     horizontal: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  data() {
-    return {
-      chartData: {
+  computed: {
+    chartData() {
+      return {
         labels: this.labels,
         datasets: [
           {
@@ -66,16 +68,53 @@ export default {
             data: this.data,
           },
         ],
-      },
-
-      options: {
+      };
+    },
+    options() {
+      return {
         indexAxis: this.horizontal ? "y" : "x",
         responsive: true,
-        maintainAspectRatio: false
-      },
-    };
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: "bottom",
+          },
+          title: {
+            display: true,
+            text: this.title,
+            padding: {
+              bottom: 16,
+            },
+          },
+        },
+        onClick: this.getBarSelected,
+      }
+    }
   },
-  created() {},
+  methods: {
+    getBarSelected(event) {
+      const chart = event.chart;
+
+      const points = chart.getElementsAtEventForMode(
+        event,
+        "nearest",
+        { intersect: true },
+        true
+      );
+
+      if (points.length == 0) return;
+
+      const firstPoint = points[0];
+      const label = chart.data.labels[firstPoint.index];
+      const data =
+        chart.data.datasets[firstPoint.datasetIndex].data[firstPoint.index];
+
+      this.onBarClick(label, data);
+    },
+    onBarClick(label, data) {
+      this.$emit("barClicked", { label, data });
+    },
+  },
 };
 </script>
 

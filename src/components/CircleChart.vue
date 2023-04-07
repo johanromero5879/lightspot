@@ -4,10 +4,17 @@
 </template>
 
 <script>
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  Title,
+  SubTitle
+} from "chart.js";
 import { Pie, Doughnut } from "vue-chartjs";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend, Title, SubTitle);
 
 export default {
   components: {
@@ -27,22 +34,42 @@ export default {
       type: Array,
       required: true,
     },
+    title: {
+      type: String,
+      required: true,
+    },
+    subtitle: {
+      type: String,
+      required: null,
+    },
     others: {
       type: Boolean,
       default: false,
     },
     colors: {
       type: Array,
-      default: () => ["#0D3882", "#4F90FF", "#3073E6", "#00CFC5", "#4FFFF6", "#30E6DC"]
-    }
+      default: () => [
+        "#2F55EB",
+        "#9966ff",
+        "#ffcd56",
+        "#4bc0c0",
+        "#ff9f40",
+        "#ff6384",
+        "#4F9E00",
+        "#36a2eb",
+        "#9E9D08",
+        "#EB510C",
+      ],
+    },
   },
   data() {
     return {
+      max: 0,
       chartData: {
         labels: [],
         datasets: [
           {
-            backgroundColor: this.type === "donut" ? this.colors : this.colors.reverse(),
+            backgroundColor: this.type === "donut" ? this.colors : this.colors,
             data: [],
           },
         ],
@@ -52,8 +79,22 @@ export default {
         maintainAspectRatio: false,
         plugins: {
           legend: {
-            position: "right",
-            align: "start",
+            position: "left",
+          },
+          title: {
+            display: true,
+            text: this.title,
+            padding: {
+              bottom: 24,
+            },
+          },
+          subtitle: {
+            display: !!this.subtitle,
+            text: this.subtitle,
+            position: "bottom",
+            padding: {
+              top: 24,
+            },
           },
         },
       },
@@ -66,6 +107,8 @@ export default {
   },
   methods: {
     setup() {
+      this.max = this.data.reduce((sum, value) => sum + value, 0);
+
       if (this.others) {
         return this.setOthers();
       }
@@ -74,15 +117,14 @@ export default {
       this.chartData.datasets[0].data = this.data;
     },
     setOthers() {
-      // Define the threshold value as a percentage of the total sum of data points
+      // Define the threshold value as a percentage of the max sum of data points
       const threshold = 0.02;
-      const total = this.data.reduce((sum, value) => sum + value, 0);
-      const thresholdValue = total * threshold;
+      const thresholdValue = this.max * threshold;
 
       // Initialize variables for the new "Others" category
       let othersValue = 0;
-      let othersLabel = "Others";
-      let othersColor = "#BDBDBD";
+      let othersLabel = "Otros";
+      let othersColor = "#c9cbcf";
 
       let colorIndex = 0;
 

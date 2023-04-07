@@ -2,6 +2,7 @@ import axios from "axios";
 import { AxiosError } from "axios";
 
 const instance = axios.create({ baseURL: "/" });
+
 export const findCities = async (state: string) => {
   try {
     const { data } = await instance.get("json/cities.json");

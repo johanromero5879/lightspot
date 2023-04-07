@@ -1,6 +1,5 @@
 <template>
 <main>
-<img src="../assets/team.png" height="60" width="60"/>
       <v-text-field
             v-model="Name"
             :rules="nameRules"

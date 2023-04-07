@@ -36,6 +36,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+@import "src/main.scss";
+
 .app-container {
   display: flex;
   main {
@@ -43,7 +45,7 @@ export default Vue.extend({
     padding: 2rem;
     background-color: inherit;
     width: 100%;
-    @media (max-width: 1024px) {
+    @include up-to-tablet-landscape {
       padding-left: 6rem;
     }
   }
