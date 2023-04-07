@@ -148,14 +148,6 @@ export default {
   filters: {
     formatNumberWithPrefix: formatNumberWithSuffix,
   },
-  created(){
-    this.onSubmitFilter({
-      start_date: "2021-09-1",
-      end_date: "2023-09-1",
-      state: "Cundinamarca",
-      utc_offset: "-05:00"
-    })
-  },
   methods: {
 
     calcPercent: function (num) {
