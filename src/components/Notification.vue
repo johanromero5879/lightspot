@@ -18,7 +18,7 @@
           v-bind="attrs"
           @click="removeNotification(notification)"
         >
-          Close
+          Cerrar
         </v-btn>
       </template>
     </v-snackbar>

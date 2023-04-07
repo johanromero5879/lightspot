@@ -21,6 +21,9 @@
       <small>
         El archivo subido debe tener el formato de datos que maneja la WWLLN.
       </small>
+      <small>
+        Debido al procesamiento de ubicaciones, el tamaño del archivo está limitado a 3 MB.
+      </small>
     </template>
     <template v-if="step === 2">
       <small>
