@@ -8,6 +8,7 @@ import UploadView from "@/views/UploadView.vue";
 import MapView from "../views/MapView.vue";
 import UserView from "../views/UserView.vue";
 import InsightsView from "@/views/InsightsView.vue";
+import ReportView from "@/views/ReportView.vue";
 
 Vue.use(VueRouter);
 
@@ -39,16 +40,21 @@ const routes: Array<RouteConfig> = [
         component: InsightsView,
       },
       {
+        path: "map",
+        name: "map",
+        component: MapView,
+      },
+      {
+        path: "report",
+        name: "report",
+        component: ReportView,
+      },
+      {
         path: "upload",
         name: "upload",
         component: UploadView,
         beforeEnter: (to, from, next) =>
           navGuard(to, from, next, "upload_flashes_data"),
-      },
-      {
-        path: "map",
-        name: "map",
-        component: MapView,
       },
       {
         path: "user",

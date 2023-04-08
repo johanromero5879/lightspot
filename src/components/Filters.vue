@@ -67,7 +67,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
                 v-model="form.start_date"
-                label="From"
+                label="Desde"
                 prepend-inner-icon="mdi-calendar"
                 outlined
                 dense
@@ -104,7 +104,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
                 v-model="form.end_date"
-                label="To"
+                label="Hasta"
                 prepend-inner-icon="mdi-calendar"
                 outlined
                 dense

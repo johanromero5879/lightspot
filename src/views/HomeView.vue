@@ -45,6 +45,8 @@ export default Vue.extend({
     padding: 2rem;
     background-color: inherit;
     width: 100%;
+    min-height: 100vh;
+    
     @include up-to-tablet-landscape {
       padding-left: 6rem;
     }

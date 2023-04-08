@@ -1,56 +1,63 @@
 <template>
-  <main class="container">
-    <v-stepper alt-labels v-model="step">
-      <v-stepper-header>
-        <v-stepper-step step="1">Cargar archivo</v-stepper-step>
+  <main>
+    <div class="container">
+      <v-stepper alt-labels v-model="step">
+        <v-stepper-header>
+          <v-stepper-step step="1">Cargar archivo</v-stepper-step>
 
-        <v-divider></v-divider>
+          <v-divider></v-divider>
 
-        <v-stepper-step step="2">Previsualización</v-stepper-step>
+          <v-stepper-step step="2">Previsualización</v-stepper-step>
 
-        <v-divider></v-divider>
+          <v-divider></v-divider>
 
-        <v-stepper-step step="3">Enviar</v-stepper-step>
-      </v-stepper-header>
-    </v-stepper>
-    <DropFile
-      :allowedExtensions="['txt', 'loc', 'csv']"
-      @uploadedFiles="readFile($event[0])"
-    />
-    <template v-if="step === 1">
-      <small>
-        El archivo subido debe tener el formato de datos que maneja la WWLLN.
-      </small>
-      <small>
-        Debido al procesamiento de ubicaciones, el tamaño del archivo está limitado a 3 MB.
-      </small>
-    </template>
-    <template v-if="step === 2">
-      <small>
-        Esta viendo una previsualización de {{ flashes.length }}/{{ total }}
-        registros. Tenga en cuenta que el servidor validará el archivo por
-        completo.
-      </small>
-      <small>
-        Los registros subidos se irán almacenando en una base de datos.
-      </small>
-      <v-btn class="btn-primary" @click="openConfirmDialog">
-        Cargar archivo
-      </v-btn>
-    </template>
-    <Loader
-      v-if="step === 3"
-      message="¡Espera! Procesar ubicaciones puede tomar 8-12 minutos"
-    />
-    <v-data-table
-      :headers="headers"
-      :items="flashes"
-      hide-default-footer
-      disable-sort
-      no-data-text="Ningún archivo ha sido cargado"
-      loading-text="Cargando..."
-    >
-    </v-data-table>
+          <v-stepper-step step="3">Enviar</v-stepper-step>
+        </v-stepper-header>
+      </v-stepper>
+      <DropFile
+        :allowedExtensions="['txt', 'loc', 'csv']"
+        @uploadedFiles="readFile($event[0])"
+      />
+      <template v-if="step === 1">
+        <small>
+          <v-icon color="info">mdi-information-outline</v-icon>
+          El archivo subido debe tener el formato de datos que maneja la WWLLN.
+        </small>
+        <small>
+          <v-icon color="info">mdi-information-outline</v-icon>
+          Debido al procesamiento de ubicaciones, el tamaño del archivo está
+          limitado a 3 MB.
+        </small>
+      </template>
+      <template v-if="step === 2">
+        <small>
+          <v-icon color="info">mdi-information-outline</v-icon>
+          Esta viendo una previsualización de {{ flashes.length }}/{{ total }}
+          registros. Tenga en cuenta que el servidor validará el archivo por
+          completo.
+        </small>
+        <small>
+          <v-icon color="info">mdi-information-outline</v-icon>
+          Los registros subidos se irán almacenando en una base de datos.
+        </small>
+        <v-btn class="btn-primary" @click="openConfirmDialog">
+          Cargar archivo
+        </v-btn>
+      </template>
+      <Loader
+        v-if="step === 3"
+        message="¡Espera! Procesar ubicaciones puede tomar 8-12 minutos"
+      />
+      <v-data-table
+        :headers="headers"
+        :items="flashes"
+        hide-default-footer
+        disable-sort
+        no-data-text="Ningún archivo ha sido cargado"
+        loading-text="Cargando..."
+      >
+      </v-data-table>
+    </div>
   </main>
 </template>
 
@@ -167,10 +174,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "src/main.scss";
+
 .container {
   display: flex;
   flex-direction: column;
-  row-gap: 1rem;
+  gap: 1rem;
+
+  @include for-big-desktop-up {
+    padding: 0 4rem;
+  }
 
   .list {
     background-color: var(--light-alt);

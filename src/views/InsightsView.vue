@@ -102,19 +102,18 @@
         />
       </v-card>
     </div>
-    <div v-else class="no-data">
-      <Loader v-if="loading" message="Cargando datos..." />
-      <template v-else>
-        <v-icon x-large>mdi-information-slab-circle</v-icon>
-        <p>No hay información disponible</p>
-      </template>
-    </div>
+    <LoaderPanel 
+      v-else
+      :loading="loading"
+      icon="mdi-view-dashboard-outline"
+      no-data-text="No hay datos para generar gráficas"
+    />
   </main>
 </template>
 
 <script>
 import Filters from "@/components/Filters.vue";
-import Loader from "@/components/Loader.vue";
+import LoaderPanel from "@/components/LoaderPanel.vue";
 import BarChart from "@/components/BarChart.vue";
 import CircleChart from "@/components/CircleChart.vue";
 
@@ -125,7 +124,7 @@ import { translateMonth, translateTimeofDay } from "@/utils/translator"
 export default {
   components: {
     Filters,
-    Loader,
+    LoaderPanel,
     BarChart,
     CircleChart,
   },
@@ -252,16 +251,6 @@ export default {
     display: flex;
     flex-direction: column;
   }
-}
-
-.no-data {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  color: rgba(0, 0, 0, 0.6);
 }
 
 .grid {

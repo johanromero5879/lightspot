@@ -8,10 +8,10 @@
       class="dropzone"
     >
       <v-icon large>mdi-file-upload</v-icon>
-      <span> Arrastra y suelta aquí un archivo</span>
+      <span> Arrastra y suelta aquí</span>
       <small> (o) </small>
   
-      <label for="dropfile" class="dropfile-label">Seleccionar desde el dispositivo</label>
+      <label for="dropfile" class="dropfile-label">Selecciona del dispositivo</label>
       <input type="file" id="dropfile" @change="selectFile($event)" />
     </div>
   </template>

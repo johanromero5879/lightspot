@@ -45,7 +45,7 @@ export default Vue.extend({
       items: [
         { title: "Dashboard", icon: "mdi-view-dashboard", to: "/" },
         { title: "Mapa", icon: "mdi-map-search", to: "/map" },
-        { title: "Reportes", icon: "mdi-chart-bar-stacked", to: "/reports" },
+        { title: "Reportes", icon: "mdi-file-document", to: "/report" },
         {
           title: "Cargar",
           icon: "mdi-cloud-upload-outline",

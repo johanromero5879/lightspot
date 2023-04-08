@@ -1,31 +1,12 @@
 import { AxiosError } from "axios";
 import apiClient from "@/plugins/api-client";
 
-import { FlashQuery } from "@/services/flash";
+import { getQuery } from "@/services/flash";
 
-export const getInsights = async ({
-  start_date,
-  end_date,
-  state,
-  city,
-  utc_offset,
-}: FlashQuery) => {
+export const getInsights = async (filters: any) => {
   try {
-    const query = {
-      start_date,
-      end_date,
-      country: "CO",
-      utc_offset,
-    } as FlashQuery;
-
-    if (!!state) {
-      query["state"] = state;
-    }
-
-    if (!!city) {
-      query["city"] = city;
-    }
-
+    const query = getQuery(filters)
+    
     const { data } = await apiClient.get("/flashes/insights", {
       params: query,
     });
