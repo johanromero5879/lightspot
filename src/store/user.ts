@@ -2,6 +2,7 @@ import { Module } from "vuex";
 import { RootState } from "@/store/types"
 
 import { User } from "@/models/user"
+import { Role } from "@/models/role"
 import { getCurrentUser } from "@/services/user"
 
 interface State {
@@ -29,8 +30,11 @@ export const user: Module<State, RootState> = {
       } catch (err) {
         dispatch("auth/logout", null, { root: true });
       }
-        
     },
+    async hasScope({state}, scope: string) {
+      const role = state.currentUser?.role as Role;
+      return role?.permissions.some(permission => permission === scope);
+    }
   },
   
 };

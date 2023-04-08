@@ -45,7 +45,12 @@ export default Vue.extend({
       items: [
         { title: "Dashboard", icon: "mdi-view-dashboard", to: "/" },
         { title: "Mapa", icon: "mdi-map-search", to: "/map" },
-        { title: "Reportes", icon: "mdi-file-document", to: "/report" },
+        { 
+          title: "Reportes", 
+          icon: "mdi-file-document", 
+          to: "/report",
+          scope: "generate_flashes_report" 
+        },
         {
           title: "Cargar",
           icon: "mdi-cloud-upload-outline",
@@ -59,11 +64,12 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions("auth", ["logout"]),
+    
     hasScope(scope) {
       if (!scope) return true;
       const role = this.currentUser?.role;
 
-      return role?.permissions.includes(scope);
+      return role?.permissions.some(permission => permission === scope);
     },
   },
 });

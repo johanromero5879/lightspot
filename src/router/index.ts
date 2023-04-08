@@ -12,19 +12,19 @@ import ReportView from "@/views/ReportView.vue";
 
 Vue.use(VueRouter);
 
-const navGuard = (
+const navGuard = async (
   to: Route,
   from: Route,
   next: NavigationGuardNext,
   scope: string | null = null
 ) => {
   const isAuthenticated = store.getters["auth/isAuthenticated"];
-  const user = store.getters["user/currentUser"];
 
   if (!isAuthenticated) return next("/");
   if (!scope) return next();
 
-  if (user?.role.permissions.includes(scope)) return next();
+  const authorized = await store.dispatch("user/hasScope", scope);
+  if (authorized) return next();
 
   return next("/");
 };
@@ -48,6 +48,8 @@ const routes: Array<RouteConfig> = [
         path: "report",
         name: "report",
         component: ReportView,
+        beforeEnter: (to, from, next) =>
+          navGuard(to, from, next, "generate_flashes_report"),
       },
       {
         path: "upload",
