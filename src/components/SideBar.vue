@@ -11,6 +11,20 @@
       <v-img height="40" src="@/assets/logo.png" v-else contain></v-img>
     </div>
 
+    <div v-if="!!currentUser" class="info-user">
+      <small>Bienvenido,</small>
+      <p>{{ currentUser.fullname }}</p>
+    </div>
+    <div v-else class="login menu">
+      <router-link
+        to="/login"
+        class="button"
+      >
+        <v-icon class="material-icons">mdi-login</v-icon>
+        <span class="text">Login</span>
+      </router-link>
+    </div>
+
     <h3>Menu</h3>
     <div class="menu">
       <template v-for="item in items">
@@ -24,6 +38,28 @@
           <span class="text">{{ item.title }}</span>
         </router-link>
       </template>
+    </div>
+    <v-spacer></v-spacer>
+
+    <div v-if="isAuthenticated" class="menu">
+      <v-menu transition="slide-y-reverse-transition" top :offset-y="true">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn class="button settings" text v-bind="attrs" v-on="on">
+            <v-icon class="material-icons">mdi-cog</v-icon>
+            <span class="text">Opciones</span>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="(item, index) in settings"
+            :key="index"
+            link
+            @click="item.click"
+          >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </div>
   </aside>
 </template>
@@ -45,11 +81,11 @@ export default Vue.extend({
       items: [
         { title: "Dashboard", icon: "mdi-view-dashboard", to: "/" },
         { title: "Mapa", icon: "mdi-map-search", to: "/map" },
-        { 
-          title: "Reportes", 
-          icon: "mdi-file-document", 
+        {
+          title: "Reportes",
+          icon: "mdi-file-document",
           to: "/report",
-          scope: "generate_flashes_report" 
+          scope: "generate_flashes_report",
         },
         {
           title: "Cargar",
@@ -58,18 +94,22 @@ export default Vue.extend({
           scope: "upload_flashes_data",
         },
         { title: "Usuarios", icon: "mdi-account-plus", to: "/user" },
-        
       ],
+      settings: [{ title: "Cerrar sesión", click: this.logOut }],
     };
   },
   methods: {
     ...mapActions("auth", ["logout"]),
-    
+
     hasScope(scope) {
       if (!scope) return true;
       const role = this.currentUser?.role;
 
-      return role?.permissions.some(permission => permission === scope);
+      return role?.permissions.some((permission) => permission === scope);
+    },
+
+    logOut() {
+      this.logout();
     },
   },
 });
@@ -100,29 +140,13 @@ aside {
     margin-bottom: 1rem;
   }
 
-  .menu-toggle-wrap {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1rem;
-
-    position: relative;
-    top: 0;
+  .info-user {
+    color: rgba(0, 0, 0, 0.6);
+    margin-bottom: 0.5rem;
     transition: 0.2s ease-in-out;
 
-    .menu-toggle {
-      transition: 0.2s ease-in-out;
-      .material-icons {
-        font-size: 2rem;
-        color: var(--light);
-        transition: 0.2s ease-out;
-      }
-
-      &:hover {
-        .material-icons {
-          color: var(--primary);
-          transform: translateX(0.5rem);
-        }
-      }
+    @media (max-width: 1263px) {
+      display: none;
     }
   }
 
@@ -137,10 +161,20 @@ aside {
     font-size: 0.875rem;
     margin-bottom: 0.5rem;
     text-transform: uppercase;
+
+    @media (max-width: 1263px) {
+      display: none;
+    }
   }
 
   .menu {
     margin: 0 -1rem;
+
+    &.login {
+      @media (min-width: 1264px) {
+        margin-bottom: 1rem;
+      }
+    }
 
     .button {
       display: flex;
@@ -149,6 +183,13 @@ aside {
 
       transition: 0.2s ease-in-out;
       padding: 0.5rem 1rem;
+
+      &.settings {
+        display: flex;
+        width: 100%;
+        justify-content: start;
+        justify-items: s;
+      }
 
       .material-icons {
         font-size: 2rem;
@@ -181,26 +222,8 @@ aside {
     }
   }
 
-  .footer {
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-
-    p {
-      font-size: 0.875rem;
-      color: var(--grey);
-    }
-  }
-
   &.is-expanded {
     width: var(--sidebar-width);
-
-    .menu-toggle-wrap {
-      top: -3rem;
-
-      .menu-toggle {
-        transform: rotate(-180deg);
-      }
-    }
 
     h3,
     .button .text {
@@ -211,10 +234,6 @@ aside {
       .material-icons {
         margin-right: 1rem;
       }
-    }
-
-    .footer {
-      opacity: 0;
     }
   }
 

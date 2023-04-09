@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 
 import Loader from "@/components/Loader.vue";
 import DropFile from "@/components/DropFile.vue";
@@ -72,16 +72,6 @@ export default {
   components: {
     Loader,
     DropFile,
-  },
-  computed: {
-    ...mapGetters("auth", ["isAuthenticated"]),
-  },
-  watch: {
-    isAuthenticated(newState) {
-      if (!newState) {
-        this.$router.push("/");
-      }
-    },
   },
   data() {
     return {

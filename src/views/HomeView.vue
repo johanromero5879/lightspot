@@ -7,16 +7,24 @@
 
 <script>
 import Vue from "vue";
-import { mapActions, mapGetters } from "vuex"
+import { mapActions, mapGetters } from "vuex";
 
-import Sidebar from '@/components/SideBar.vue';
+import Sidebar from "@/components/SideBar.vue";
 
 export default Vue.extend({
   components: {
-    Sidebar
+    Sidebar,
   },
   computed: {
-    ...mapGetters("auth", ["timer"])
+    ...mapGetters("auth", ["timer"]),
+    ...mapGetters("auth", ["isAuthenticated"]),
+  },
+  watch: {
+    isAuthenticated(newState) {
+      if (!newState) {
+        this.$router.push("/").catch(()=>{});
+      }
+    },
   },
   methods: {
     ...mapActions("user", ["fetchCurrentUser"]),
@@ -25,14 +33,14 @@ export default Vue.extend({
   created() {
     const setup = async () => {
       if (!this.timer) {
-        await this.fetchToken()
+        await this.fetchToken();
       }
-      await this.fetchCurrentUser()
+      await this.fetchCurrentUser();
       // await this.logout()
-    }
-    setup()
-  }
-})
+    };
+    setup();
+  },
+});
 </script>
 
 <style lang="scss" scoped>
@@ -46,7 +54,7 @@ export default Vue.extend({
     background-color: inherit;
     width: 100%;
     min-height: 100vh;
-    
+
     @include up-to-tablet-landscape {
       padding-left: 6rem;
     }
