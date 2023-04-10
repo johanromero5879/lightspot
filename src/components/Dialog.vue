@@ -20,7 +20,7 @@
                     Cancelar
                 </v-btn>
                 <v-btn 
-                    class="btn-primary"
+                    :class="type === 'info' ? 'btn-primary' : type"
                     @click="confirm"
                 >
                     Ok
@@ -34,7 +34,7 @@
 import { mapGetters, mapActions } from "vuex";
 export default {
     computed: {
-        ...mapGetters("dialog", ["show", "title", "message", "isConfirm"])
+        ...mapGetters("dialog", ["show", "title", "message", "type", "isConfirm"])
     },
     methods: {
         ...mapActions("dialog", ["close", "confirm"])
