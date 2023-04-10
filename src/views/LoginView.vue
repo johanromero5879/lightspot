@@ -1,8 +1,14 @@
 <template>
-  <v-main>
+  <main class="container">
     <v-card class="card">
       <div class="row">
-        <v-form class="form" @submit.prevent="handleSubmit">
+        <v-form
+          ref="form"
+          class="form"
+          v-model="isValid"
+          lazy-validation
+          @submit.prevent="handleSubmit"
+        >
           <v-img
             class="logo"
             width="250"
@@ -10,31 +16,40 @@
             src="@/assets/long_logo.png"
             contain
           ></v-img>
-          <h2>Login</h2>
+          <h2 class="text-h6">Iniciar sesión</h2>
           <v-text-field
+            v-model="user.email"
+            :rules="emailRules"
             label="Correo"
             outlined
-            :dense="mobile"
             color="blue"
             autocomplete="false"
             prepend-inner-icon="mdi-account-circle"
-            v-model="user.email"
           />
           <v-text-field
+            v-model="user.password"
+            :rules="passwordRules"
+            
             label="Contraseña"
             outlined
-            :dense="mobile"
             color="blue"
             autocomplete="false"
-            type="password"
+            :type="showPassword ? 'text' : 'password'"
             prepend-inner-icon="mdi-lock"
-            v-model="user.password"
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="showPassword = !showPassword"
           />
-          <v-btn class="btn-primary" block type="submit">Acceder</v-btn>
-          <div class="link">
-            <router-link to="/reset-password"
+          <v-btn class="btn-primary" block :loading="loading" type="submit">
+            Acceder
+          </v-btn>
+          <!-- <div class="link">
+            <router-link to="/password/reset"
               >¿Ha olvidado su contraseña?</router-link
             >
+          </div> -->
+          <div v-if="alert.show" class="alert">
+            <v-icon class="red--text accent-3">mdi-alert-circle-outline</v-icon>
+            <span class="red--text accent-3">{{ alert.message }}</span>
           </div>
         </v-form>
         <v-carousel
@@ -54,11 +69,11 @@
         </v-carousel>
       </div>
     </v-card>
-  </v-main>
+  </main>
 </template>
 
 <script>
-import { mapActions } from "vuex"
+import { mapActions } from "vuex";
 
 export default {
   computed: {
@@ -73,30 +88,69 @@ export default {
 
       return images;
     },
-  },  
+  },
   methods: {
     ...mapActions("auth", ["login"]),
     async handleSubmit() {
-      try {
-        await this.login(this.user)
+      if (!this.validateForm() || this.loading) return;
 
-        this.$router.push("/")
+      this.loading = true;
+      try {
+        await this.login(this.user);
+
+        this.$router.push("/");
       } catch (err) {
-        console.error(err.message)
+        this.showAlert("No se ha podido iniciar sesión")
+      } finally {
+        this.loading = false;
       }
+    },
+    validateForm() {
+      return this.$refs.form.validate();
+    },
+    showAlert(message) {
+      this.alert.message = message;
+      this.alert.show = true;
+
+      setTimeout(() => {
+        this.alert.show = false;
+        this.alert.message = "";
+      }, 5000)
     }
   },
   data: () => ({
+    loading: false,
+    isValid: true,
+    showPassword: false,
+    alert: {
+      show: false,
+      message: ""
+    },
+    emailRules: [
+      (v) => !!v || "El correo es requerido",
+      (v) =>
+        /.+@.+\..+/.test(v) || "Introduzca una dirección de correo electrónico",
+    ],
+    passwordRules: [(v) => !!v || "La contraseña es requerida"],
     user: {
-      email: '',
-      password: ''
-    }
-  })
+      email: "",
+      password: "",
+    },
+  }),
 };
 </script>
 
 <style lang="scss" scoped>
-main {
+@import "src/main.scss";
+
+.container {
+  /* Gradient */
+  background: rgb(246,246,246);
+  background: linear-gradient(90deg, rgba(246,246,246,1) 4%, rgba(255,255,255,1) 84%);
+
+  
+  width: 100%;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -106,54 +160,59 @@ main {
     grid-template-columns: 1fr 1fr;
     align-items: center;
 
-    @media (max-width: 960px) {
+    @include up-to-tablet-portrait {
       grid-template-columns: 1fr;
     }
   }
 
   .logo {
     margin: 0 auto;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
   }
 
   .card {
-    margin: 0 auto;
-    max-width: 900px;
+    width: 900px;
 
-    @media (max-width: 960px) {
+    @include up-to-tablet-portrait {
       max-width: 500px;
     }
 
-    @media (max-width: 600px) {
-      max-width: 100%;
+    @include for-phone-only {
+      width: 100%;
     }
 
     .form {
-      text-align: center;
       padding: 4rem;
 
-      @media (max-width: 600px) {
-        padding: 2rem;
-      }
-
-      @media (max-width: 320px) {
-        padding: 1rem;
+      @include for-phone-only {
+        padding: 2rem 1.5rem;
       }
 
       h2 {
         text-align: left;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
       }
 
       .link {
         margin-top: 1rem;
         text-align: left;
       }
+
+      .alert {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: 0.2s ease-in-out;
+        margin-top: 1rem;
+      }
     }
 
     .carousel {
       height: 600px;
-      @media (max-width: 960px) {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+
+      @include up-to-tablet-portrait {
         display: none;
       }
     }
