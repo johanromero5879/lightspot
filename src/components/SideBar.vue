@@ -21,7 +21,7 @@
         class="button"
       >
         <v-icon class="material-icons">mdi-login</v-icon>
-        <span class="text">Login</span>
+        <span class="text">Iniciar sesión</span>
       </router-link>
     </div>
 
@@ -88,12 +88,18 @@ export default Vue.extend({
           scope: "generate_flashes_report",
         },
         {
-          title: "Cargar",
+          title: "Cargar archivo",
           icon: "mdi-cloud-upload-outline",
           to: "/upload",
           scope: "upload_flashes_data",
         },
-        { title: "Usuarios", icon: "mdi-account-plus", to: "/user" },
+        {
+          title: "Último registro",
+          icon: "mdi-delete-clock",
+          to: "/flashes/remove",
+          scope: "remove_my_uploaded_flashes",
+        },
+        // { title: "Usuarios", icon: "mdi-account-supervisor", to: "/users" },
       ],
       settings: [{ title: "Cerrar sesión", click: this.logOut }],
     };
@@ -119,6 +125,9 @@ export default Vue.extend({
 @import "src/main.scss";
 
 aside {
+  position: fixed;
+  z-index: 99;
+  
   display: flex;
   flex-direction: column;
 
@@ -180,6 +189,7 @@ aside {
       display: flex;
       align-items: center;
       text-decoration: none;
+      height: 48px !important;
 
       transition: 0.2s ease-in-out;
       padding: 0.5rem 1rem;
@@ -187,7 +197,7 @@ aside {
       &.settings {
         display: flex;
         width: 100%;
-        justify-content: start;
+        justify-content: flex-start;
         justify-items: s;
       }
 
@@ -235,11 +245,6 @@ aside {
         margin-right: 1rem;
       }
     }
-  }
-
-  @include up-to-tablet-landscape {
-    position: fixed;
-    z-index: 99;
   }
 }
 </style>

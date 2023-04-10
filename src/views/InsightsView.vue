@@ -105,6 +105,7 @@
     <LoaderPanel 
       v-else
       :loading="loading"
+      loading-text="Cargando gráficas..." 
       icon="mdi-view-dashboard-outline"
       no-data-text="No hay datos para generar gráficas"
     />
@@ -256,7 +257,7 @@ export default {
 .grid {
   display: grid;
   justify-content: center;
-  align-items: start;
+  align-items: flex-start;
   gap: 1rem;
   width: 100%;
 
@@ -293,7 +294,7 @@ export default {
 
   .kpi {
     justify-content: center;
-    align-items: start;
+    align-items: flex-start;
 
     @include up-to-tablet-landscape {
       justify-content: space-between;
@@ -316,7 +317,7 @@ export default {
       gap: 0.5rem;
       width: 100%;
       padding: 1.5rem;
-      align-items: start;
+      align-items: flex-start;
     }
 
     @include for-desktop-up {

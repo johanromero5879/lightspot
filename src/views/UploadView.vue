@@ -19,24 +19,30 @@
         @uploadedFiles="readFile($event[0])"
       />
       <template v-if="step === 1">
-        <small>
+        <small class="info-text">
           <v-icon color="info">mdi-information-outline</v-icon>
           El archivo subido debe tener el formato de datos que maneja la WWLLN.
         </small>
-        <small>
+        <small class="info-text">
           <v-icon color="info">mdi-information-outline</v-icon>
           Debido al procesamiento de ubicaciones, el tamaño del archivo está
           limitado a 3 MB.
         </small>
       </template>
       <template v-if="step === 2">
-        <small>
+        <small class="info-text">
           <v-icon color="info">mdi-information-outline</v-icon>
           Esta viendo una previsualización de {{ flashes.length }}/{{ total }}
           registros. Tenga en cuenta que el servidor validará el archivo por
           completo.
         </small>
-        <small>
+        <small class="info-text">
+          <v-icon color="info">mdi-information-outline</v-icon>
+          <span>
+            Una vez subido el archivo, tiene <strong>un día</strong> para eliminar los datos en la sección <strong>Último registro</strong>.
+          </span>
+        </small>
+        <small class="info-text">
           <v-icon color="info">mdi-information-outline</v-icon>
           Los registros subidos se irán almacenando en una base de datos.
         </small>

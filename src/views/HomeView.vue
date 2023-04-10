@@ -28,7 +28,7 @@ export default Vue.extend({
   },
   methods: {
     ...mapActions("user", ["fetchCurrentUser"]),
-    ...mapActions("auth", ["fetchToken", "logout"]),
+    ...mapActions("auth", ["fetchToken"]),
   },
   created() {
     const setup = async () => {
@@ -36,7 +36,6 @@ export default Vue.extend({
         await this.fetchToken();
       }
       await this.fetchCurrentUser();
-      // await this.logout()
     };
     setup();
   },
@@ -54,9 +53,18 @@ export default Vue.extend({
     background-color: inherit;
     width: 100%;
     min-height: 100vh;
+    // margin-left: calc(2rem + 32px);
 
     @include up-to-tablet-landscape {
       padding-left: 6rem;
+    }
+
+    @include for-desktop-up {
+      margin-left: calc(2rem + 32px);
+    }
+
+    @media (min-width: 1264px) {
+      margin-left: var(--sidebar-width);
     }
   }
 }

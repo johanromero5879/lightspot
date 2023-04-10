@@ -9,6 +9,7 @@ import MapView from "../views/MapView.vue";
 import UserView from "../views/UserView.vue";
 import InsightsView from "@/views/InsightsView.vue";
 import ReportView from "@/views/ReportView.vue";
+import RemoveFlashesView from "@/views/RemoveFlashesView.vue";
 
 Vue.use(VueRouter);
 
@@ -57,6 +58,13 @@ const routes: Array<RouteConfig> = [
         component: UploadView,
         beforeEnter: (to, from, next) =>
           navGuard(to, from, next, "upload_flashes_data"),
+      },
+      {
+        path: "/flashes/remove",
+        name: "remove-flashes",
+        component: RemoveFlashesView,
+        beforeEnter: (to, from, next) =>
+          navGuard(to, from, next, "remove_my_uploaded_flashes"),
       },
       {
         path: "user",

@@ -13,6 +13,7 @@
         <LoaderPanel 
             v-else 
             :loading="loading"
+            loading-text="Cargando reporte..."
             icon="mdi-file-document-outline"
             no-data-text="No hay datos para generar un reporte"
         />

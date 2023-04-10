@@ -46,6 +46,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
   font-size: 20px;
   color: rgba(0, 0, 0, 0.6);
 }

@@ -31,7 +31,7 @@ export default Vue.extend({
   --dark-alt: #4f4f4f;
   --light: #fff;
   --light-alt: #f6f6f6;
-  --sidebar-width: 250px;
+  --sidebar-width: 300px;
 }
 
 * {
@@ -57,6 +57,13 @@ a {
 
 .v-application {
   background-color: var(--light-alt) !important;
+}
+
+.info-text {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .btn-primary {

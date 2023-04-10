@@ -83,7 +83,7 @@
             >
               <v-spacer></v-spacer>
               <v-btn text color="primary" @click="modalFrom = false">
-                Cancel
+                Cancelar
               </v-btn>
               <v-btn
                 text
@@ -121,7 +121,7 @@
             >
               <v-spacer></v-spacer>
               <v-btn text color="primary" @click="modalTo = false">
-                Cancel
+                Cancelar
               </v-btn>
               <v-btn
                 text
