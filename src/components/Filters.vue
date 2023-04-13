@@ -291,7 +291,7 @@ export default {
   }
 
   .title {
-    background-color: var(--primary-alt);
+    background-color: var(--secondary);
     color: var(--light);
   }
 

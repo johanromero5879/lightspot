@@ -24,8 +24,8 @@ export default Vue.extend({
 :root {
   --primary: #0d3882;
   --primary-alt: #1559cf;
-  --secondary: #00cfc5;
-  --secondary-alt: #00dbd0;
+  --secondary: #0891B2;
+  --secondary-alt: #00cfc5;
   --grey: #8297b5;
   --dark: #393939;
   --dark-alt: #4f4f4f;
@@ -73,5 +73,6 @@ a {
 
 .btn-secondary {
   background-color: var(--secondary) !important;
+  color: var(--light) !important;
 }
 </style>
