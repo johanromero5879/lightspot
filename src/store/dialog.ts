@@ -55,10 +55,12 @@ export const dialog: Module<State, RootState> = {
     },
     close({ commit }) {
       commit("setShow", false);
-      commit("setTitle", "");
-      commit("setMessage", "");
-      commit("setType", "info");
-      commit("setConfirm", null);
+      setTimeout(() => {
+        commit("setTitle", "");
+        commit("setMessage", "");
+        commit("setType", "info");
+        commit("setConfirm", null);
+      }, 500)
     },
     confirm({ state, dispatch }) {
       if (typeof state.confirm === "function") {

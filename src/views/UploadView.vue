@@ -15,7 +15,7 @@
         </v-stepper-header>
       </v-stepper>
       <DropFile
-        :allowedExtensions="['txt', 'loc', 'csv']"
+        :allowedExtensions="allowedExtensions"
         @uploadedFiles="readFile($event[0])"
       />
       <template v-if="step === 1">
@@ -27,6 +27,10 @@
           <v-icon color="info">mdi-information-outline</v-icon>
           Debido al procesamiento de ubicaciones, el tamaño del archivo está
           limitado a 3 MB.
+        </small>
+        <small class="info-text">
+          <v-icon color="info">mdi-information-outline</v-icon>
+          Las extensiones permitidas son: {{ allowedExtensions.map(ext => formatExtension(ext)).join(",") }}
         </small>
       </template>
       <template v-if="step === 2">
@@ -81,6 +85,7 @@ export default {
   },
   data() {
     return {
+      allowedExtensions: ['loc', 'txt', 'csv'],
       step: 1,
       file: null,
       headers: [
@@ -97,6 +102,9 @@ export default {
   methods: {
     ...mapActions("notifier", ["showNotification"]),
     ...mapActions("dialog", ["openDialog"]),
+    formatExtension(extension) {
+      return `*.${extension}`
+    },
     clear() {
       this.file = null;
       this.flashes = [];
@@ -136,7 +144,7 @@ export default {
         const { processed_records } = await uploadFile(this.file);
 
         this.openDialog({
-          title: "Archivo cargado exitosamente",
+          title: "Archivo cargado",
           message: `Registros procesados: ${processed_records}`,
           confirm: null,
         });

@@ -34,7 +34,7 @@
 import { mapGetters, mapActions } from "vuex";
 export default {
     computed: {
-        ...mapGetters("dialog", ["show", "title", "message", "type", "isConfirm"])
+        ...mapGetters("dialog", ["show", "title", "message", "type", "isConfirm"]),
     },
     methods: {
         ...mapActions("dialog", ["close", "confirm"])

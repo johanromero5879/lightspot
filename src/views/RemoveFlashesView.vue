@@ -11,7 +11,7 @@
       </small>
       <v-btn 
         class="error"
-        :disabled="flashes.length === 0"
+        :disabled="flashes.length === 0 || loading"
         @click="onConfirm"
       >
         <v-icon>mdi-delete-forever</v-icon>
@@ -83,6 +83,7 @@ export default {
     },
     async deleteFlashes() {
       try {
+        this.loading = true;
         await removeFlashesLastDay()
         this.flashes = []
 
@@ -95,6 +96,8 @@ export default {
           message: "Error al eliminar los registros del último día",
           type: "error"
         })
+      } finally {
+        this.loading = false;
       }
     }
   },
