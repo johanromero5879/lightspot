@@ -2,6 +2,12 @@
   <div class="app-container">
     <Sidebar />
     <router-view />
+
+    <NewPasswordForm 
+      v-model="passwordForm" 
+      :registration-token="registration_token" 
+      @submited="setup"
+    />
   </div>
 </template>
 
@@ -9,11 +15,26 @@
 import Vue from "vue";
 import { mapActions, mapGetters } from "vuex";
 
+import { isNewUser } from "@/services/auth";
+
 import Sidebar from "@/components/SideBar.vue";
+import NewPasswordForm from "@/components/NewPasswordForm.vue";
 
 export default Vue.extend({
   components: {
     Sidebar,
+    NewPasswordForm,
+  },
+  props: {
+    registration_token: {
+      type: String,
+      default: null,
+    },
+  },
+  data() {
+    return {
+      passwordForm: false,
+    };
   },
   computed: {
     ...mapGetters("auth", ["timer"]),
@@ -22,22 +43,35 @@ export default Vue.extend({
   watch: {
     isAuthenticated(newState) {
       if (!newState) {
-        this.$router.push("/").catch(()=>{});
+        this.$router.push("/").catch(() => {});
       }
     },
   },
   methods: {
     ...mapActions("user", ["fetchCurrentUser"]),
     ...mapActions("auth", ["fetchToken"]),
-  },
-  created() {
-    const setup = async () => {
+    async setup() {
       if (!this.timer) {
         await this.fetchToken();
       }
       await this.fetchCurrentUser();
-    };
-    setup();
+    },
+    async setupNewUser() {
+      this.passwordForm = await isNewUser(this.registration_token);
+
+      // Clear query params
+      if (!this.passwordForm) {
+        this.$router.replace({ path: this.$route.path, query: {} });
+      }
+    },
+  },
+  async created() {
+    if (!!this.registration_token) {
+      this.setupNewUser()
+      return;
+    }
+
+    this.setup();
   },
 });
 </script>
