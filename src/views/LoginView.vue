@@ -22,7 +22,6 @@
             :rules="emailRules"
             label="Correo"
             outlined
-            color="blue"
             autocomplete="false"
             prepend-inner-icon="mdi-account-circle"
           />
@@ -95,7 +94,7 @@ export default {
 
         this.$router.push("/");
       } catch (err) {
-        this.showAlert("No se ha podido iniciar sesión")
+        this.showAlert(err.message)
       } finally {
         this.loading = false;
       }

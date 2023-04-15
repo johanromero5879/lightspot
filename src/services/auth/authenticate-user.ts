@@ -10,7 +10,9 @@ export const authenticateUser = async (user: Auth): Promise<Token> => {
     return data;
   } catch (err: unknown) {
     if (err instanceof AxiosError) {
-      const data = err.response?.data;
+      const {data, status} = err.response!
+
+      if (status === 401) throw new Error("Las credenciales no son validas")
       if(data?.detail) throw new Error(data.detail)
     }
 
