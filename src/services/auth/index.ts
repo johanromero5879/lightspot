@@ -1,3 +1,5 @@
 export * from "./authenticate-user"
 export * from "./logout"
 export * from "./refresh-token"
+export * from "./is-new-user"
+export * from "./register-password"
