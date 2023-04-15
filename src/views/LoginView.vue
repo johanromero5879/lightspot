@@ -26,18 +26,9 @@
             autocomplete="false"
             prepend-inner-icon="mdi-account-circle"
           />
-          <v-text-field
+          <PasswordField 
             v-model="user.password"
             :rules="passwordRules"
-            
-            label="Contraseña"
-            outlined
-            color="blue"
-            autocomplete="false"
-            :type="showPassword ? 'text' : 'password'"
-            prepend-inner-icon="mdi-lock"
-            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append="showPassword = !showPassword"
           />
           <v-btn class="btn-primary" block :loading="loading" type="submit">
             Acceder
@@ -74,8 +65,12 @@
 
 <script>
 import { mapActions } from "vuex";
+import PasswordField from "@/components/PasswordField.vue";
 
 export default {
+  components: {
+    PasswordField
+  },
   computed: {
     mobile() {
       return this.$vuetify.breakpoint.mobile;
@@ -121,7 +116,6 @@ export default {
   data: () => ({
     loading: false,
     isValid: true,
-    showPassword: false,
     alert: {
       show: false,
       message: ""
