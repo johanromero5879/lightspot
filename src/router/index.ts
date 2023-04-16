@@ -34,6 +34,7 @@ const routes: Array<RouteConfig> = [
   {
     path: "/",
     component: HomeView,
+    props: route => ({registration_token: route.query.registration_token}),
     children: [
       {
         path: "",
@@ -67,9 +68,11 @@ const routes: Array<RouteConfig> = [
           navGuard(to, from, next, "remove_my_uploaded_flashes"),
       },
       {
-        path: "user",
-        name: "user",
+        path: "users",
+        name: "users",
         component: UserView,
+        beforeEnter: (to, from, next) =>
+          navGuard(to, from, next, "register_users")
       }
     ],
   },

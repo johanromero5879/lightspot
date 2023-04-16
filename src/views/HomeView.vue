@@ -6,7 +6,7 @@
     <NewPasswordForm 
       v-model="passwordForm" 
       :registration-token="registration_token" 
-      @submited="setup"
+      @submited="setup(true)"
     />
   </div>
 </template>
@@ -50,7 +50,9 @@ export default Vue.extend({
   methods: {
     ...mapActions("user", ["fetchCurrentUser"]),
     ...mapActions("auth", ["fetchToken"]),
-    async setup() {
+    async setup(clearParams = false) {
+      if (clearParams) this.$router.replace({ path: this.$route.path, query: {} })
+
       if (!this.timer) {
         await this.fetchToken();
       }
@@ -62,6 +64,7 @@ export default Vue.extend({
       // Clear query params
       if (!this.passwordForm) {
         this.$router.replace({ path: this.$route.path, query: {} });
+        this.setup()
       }
     },
   },

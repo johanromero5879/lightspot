@@ -99,9 +99,14 @@ export default Vue.extend({
           to: "/flashes/remove",
           scope: "remove_my_uploaded_flashes",
         },
-        // { title: "Usuarios", icon: "mdi-account-supervisor", to: "/users" },
+        { 
+          title: "Usuarios", 
+          icon: "mdi-account-supervisor", 
+          to: "/users", 
+          scope: "register_users" 
+        },
       ],
-      settings: [{ title: "Cerrar sesión", click: this.logOut }],
+      settings: [{ title: "Cerrar sesión", click: this.logout }],
     };
   },
   methods: {
@@ -112,11 +117,7 @@ export default Vue.extend({
       const role = this.currentUser?.role;
 
       return role?.permissions.some((permission) => permission === scope);
-    },
-
-    logOut() {
-      this.logout();
-    },
+    }
   },
 });
 </script>

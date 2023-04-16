@@ -6,7 +6,7 @@
        />
       <template v-else>
         <v-icon x-large>{{ icon }}</v-icon>
-        <p>{{noDataText }}</p>
+        <p>{{noDataText}}</p>
       </template>
     </div>
 </template>
