@@ -56,7 +56,7 @@
 
         if (!this.validateSize(files)){
             this.showNotification({
-              message: "Tamaño limite por archivo es de 3MB", 
+              message: `Tamaño limite por archivo es de ${this.maxSize}MB`, 
               type: "error"
             })
             return

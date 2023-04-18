@@ -16,6 +16,7 @@
       </v-stepper>
       <DropFile
         :allowedExtensions="allowedExtensions"
+        :max-size="maxSize"
         @uploadedFiles="readFile($event[0])"
       />
       <template v-if="step === 1">
@@ -26,7 +27,7 @@
         <small class="info-text">
           <v-icon color="info">mdi-information-outline</v-icon>
           Debido al procesamiento de ubicaciones, el tamaño del archivo está
-          limitado a 3 MB.
+          limitado a {{ this.maxSize }} MB.
         </small>
         <small class="info-text">
           <v-icon color="info">mdi-information-outline</v-icon>
@@ -54,10 +55,15 @@
           Cargar archivo
         </v-btn>
       </template>
-      <Loader
-        v-if="step === 3"
-        message="¡Espera! Procesar ubicaciones puede tomar 8-12 minutos"
-      />
+      <template v-if="step === 3">
+        <small class="info-text">
+          <v-icon color="info">mdi-information-outline</v-icon>
+          Dependiendo de la cantidad de registros, puede llegar a tardar entre 5-15 minutos en procesar el archivo.
+        </small>
+        <Loader
+          message="¡Espera! Procesar ubicaciones puede tomar varios minutos."
+        />
+      </template>
       <v-data-table
         :headers="headers"
         :items="flashes"
@@ -86,6 +92,7 @@ export default {
   data() {
     return {
       allowedExtensions: ['loc', 'txt', 'csv'],
+      maxSize: 7,
       step: 1,
       file: null,
       headers: [
@@ -149,9 +156,11 @@ export default {
           confirm: null,
         });
       } catch (err) {
-        this.showNotification({
+        this.openDialog({
+          title: "Error al cargar archivo",
           message: err.message,
-          type: "error",
+          confirm: null,
+          type: "error"
         });
       } finally {
         this.clear();
