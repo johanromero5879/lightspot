@@ -163,6 +163,7 @@ export default {
 
   .icon {
     font-size: 4rem;
+    color: var(--primary-alt);
 
     @include for-phone-only {
       font-size: 3rem;

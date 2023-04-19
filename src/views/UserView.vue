@@ -7,8 +7,8 @@
           <v-list class="list">
             <v-subheader>Miembros</v-subheader>
             <template v-for="(user, index) in users">
-              <v-list-item link>
-                <v-list-item-avatar color="grey darken-1 white--text">{{
+              <v-list-item link class="item">
+                <v-list-item-avatar class="avatar" color="grey darken-1 white--text">{{
                   user.fullname | getNameInitials
                 }}</v-list-item-avatar>
                 <v-list-item-content>
@@ -162,6 +162,18 @@ main {
 
       .chip {
         margin-right: 0.2rem;
+      }
+
+      .item:nth-of-type(odd) {
+        .avatar {
+          background-color: #2196f3 !important;
+        }
+      }
+
+      .item:nth-of-type(even) {
+        .avatar {
+          background-color: var(--secondary) !important;
+        }
       }
     }
   }

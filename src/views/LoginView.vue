@@ -15,6 +15,7 @@
             height="60"
             src="@/assets/long_logo.png"
             contain
+            @click="() => $router.push('/')"
           ></v-img>
           <h2 class="text-h6">Iniciar sesión</h2>
           <v-text-field
@@ -161,6 +162,7 @@ export default {
   .logo {
     margin: 0 auto;
     margin-bottom: 1rem;
+    cursor: pointer;
   }
 
   .card {
