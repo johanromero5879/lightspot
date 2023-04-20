@@ -2,9 +2,16 @@ import { AxiosError } from "axios";
 import apiClient from "@/plugins/api-client";
 
 
-export const removeFlashesLastDay = async () => {
+export const removeFlashesLastDay = async (file: string | null = null) => {
   try {
-    await apiClient.delete(`/flashes/last-day`);
+    let params = {}
+
+    if (!!file) {
+      params = {file}
+    }
+
+    await apiClient.delete(`/flashes/last-day`, { params });
+    
   } catch (err: unknown) {
     if (err instanceof AxiosError) {
       const data = err.response?.data;
