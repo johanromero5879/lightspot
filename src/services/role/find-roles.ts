@@ -5,7 +5,7 @@ export const findRoles = async (): Promise<Role[]> => {
     try {
         const { data: roles } = await apiClient.get("/roles")
         return roles;
-    } catch (err: unknown) {
+    } catch (err: any) {
         throw Error("Error al cargar los roles")
     }
 }

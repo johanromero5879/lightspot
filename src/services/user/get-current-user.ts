@@ -1,18 +1,17 @@
-import { AxiosError } from "axios";
 import apiClient from "@/plugins/api-client";
 
-import { User } from "@/models/user";
+import { getAxiosError } from "@/services/error-handler"
 
-export const getCurrentUser = async (): Promise<User> => {
+export const getCurrentUser = async () => {
   try {
     const { data } = await apiClient.get("/users/me");
     return data;
-  } catch (err: unknown) {
-    if (err instanceof AxiosError) {
-      const { detail } = err.response?.data;
-      throw new Error(detail);
-    }
+  } catch (error: any) {
+    error = getAxiosError(error)
 
-    throw new Error("Failed to find current user");
+    if (!error) throw new Error("Error al cargar el usuario logueado");
+    const {status, detail} = error
+    
+    if (detail) throw new Error(detail);
   }
 };

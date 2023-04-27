@@ -68,7 +68,7 @@ export default {
       user: {
         fullname: "",
         email: "",
-        role: "admin",
+        role: "",
       },
       rules: {
         required: v => !!v || "Este campo es requerido",
@@ -88,6 +88,7 @@ export default {
       try {
         const roles = await findRoles();
         this.roles = roles.map((role) => role.name);
+        this.user.role = this.roles[0]
       } catch (err) {
         this.showNotification({
           message: "Error al cargar los roles",

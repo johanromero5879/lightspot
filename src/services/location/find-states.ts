@@ -1,5 +1,6 @@
 import axios from "axios";
-import { AxiosError } from "axios";
+
+import { getAxiosError } from "@/services/error-handler"
 
 const instance = axios.create({ baseURL: "/" });
 
@@ -8,12 +9,12 @@ export const findStates = async () => {
     const { data } = await instance.get("json/states.json");
 
     return data;
-  } catch (err: unknown) {
-    if (err instanceof AxiosError) {
-      const { detail } = err.response?.data;
-      throw new Error(detail);
-    }
+  } catch (error: any) {
+    error = getAxiosError(error)
 
-    throw new Error("Failed to consult with file");
+    if (!error) throw new Error("Error al consultar los departamentos");
+    const {status, detail} = error
+    
+    if (detail) throw new Error(detail);
   }
 };

@@ -1,6 +1,6 @@
-import { AxiosError } from "axios";
 import apiClient from "@/plugins/api-client";
 
+import { getAxiosError } from "@/services/error-handler"
 import { User } from "@/models/user";
 
 interface UserList {
@@ -8,21 +8,20 @@ interface UserList {
   users: User[]
 }
 
-export const findUsers = async (limit: number, page: number): Promise<UserList> => {
+export const findUsers = async (limit: number, page: number) => {
   try {
     const { data } = await apiClient.get("/users", {
       params: {limit, page}
     });
     return data;
-  } catch (err: unknown) {
-    if (err instanceof AxiosError) {
-      const { data, status } = err.response!;
+  } catch (error: any) {
+    error = getAxiosError(error)
 
-      if (status === 401 || status === 403) throw Error("No tiene permisos para ver usuarios")
+    if (!error) throw new Error("Error al cargar usuarios");
+    const {status, detail} = error
+    
+    if (status === 401 || status === 403) throw new Error("No tiene permisos para ver usuarios");
+    if (detail) throw new Error(detail);
 
-      throw new Error(data.detail);
-    }
-
-    throw new Error("Error al cargar usuarios");
   }
 };

@@ -1,5 +1,6 @@
-import { AxiosError } from "axios";
 import apiClient from "@/plugins/api-client";
+
+import { getAxiosError } from "@/services/error-handler"
 
 export const uploadFile = async (file: File) => {
   const form = new FormData();
@@ -13,12 +14,12 @@ export const uploadFile = async (file: File) => {
     });
 
     return data;
-  } catch (err: unknown) {
-    if (err instanceof AxiosError) {
-      const data = err.response?.data;
-      if(data?.detail) throw new Error(data.detail)
-    }
+  } catch (error: any) {
+    error = getAxiosError(error)
 
-    throw new Error("Error al subir el archivo");
+    if (!error) throw new Error("Error al subir el archivo");
+    const {status, detail} = error
+    
+    if (detail) throw new Error(detail);
   }
 };

@@ -1,6 +1,6 @@
-import { AxiosError } from "axios";
 import apiClient from "@/plugins/api-client";
 
+import { getAxiosError } from "@/services/error-handler"
 import { getQuery } from "@/services/flash";
 
 export const getReport = async (filters: any) => {
@@ -12,15 +12,13 @@ export const getReport = async (filters: any) => {
       });
   
       return data;
-    } catch (err: unknown) {
-      if (err instanceof AxiosError) {
-        const {status, data} = err.response!;
+    } catch (error: any) {
+      error = getAxiosError(error)
 
-        if (status === 404) throw new Error("No se encontraron registros de flashes");
-        
-        if (data?.detail) throw new Error(data.detail);
-      }
-  
-      throw new Error("Error al buscar registros de flashes");
+      if (!error) throw new Error("Error al buscar registros de flashes");
+      const {status, detail} = error
+      
+      if (status === 404) throw new Error("No se encontraron registros de flashes");
+      if (detail) throw new Error(detail);
     }
   };
