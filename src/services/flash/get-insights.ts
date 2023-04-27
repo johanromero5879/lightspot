@@ -14,7 +14,10 @@ export const getInsights = async (filters: any) => {
     return data;
   } catch (err: unknown) {
     if (err instanceof AxiosError) {
-      const data = err.response?.data;
+      const {status, data} = err.response!;
+
+      if (status === 404) throw new Error("No se encontraron registros de flashes");
+        
       if (data?.detail) throw new Error(data.detail);
     }
 

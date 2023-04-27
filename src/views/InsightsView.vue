@@ -113,6 +113,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex"
+
 import Filters from "@/components/Filters.vue";
 import LoaderPanel from "@/components/LoaderPanel.vue";
 import BarChart from "@/components/BarChart.vue";
@@ -149,7 +151,7 @@ export default {
     formatNumberWithPrefix: formatNumberWithSuffix,
   },
   methods: {
-
+    ...mapActions("notifier", ["showNotification"]),
     calcPercent: function (num) {
       const calc = (100 * num) / this.total;
       return calc < 100 ? calc.toFixed(1) : calc;
@@ -184,7 +186,10 @@ export default {
 
         this.total = total;
       } catch (err) {
-        // nothing
+        this.showNotification({
+          type: "error",
+          message: err.message
+        })
       } finally {
         this.loading = false;
       }

@@ -60,6 +60,7 @@
 
 <script>
 import moment from "moment";
+import { mapActions } from "vuex"
 
 import { LMap, LTileLayer, LCircle, LTooltip } from "vue2-leaflet";
 import Filters from "@/components/Filters.vue";
@@ -79,11 +80,15 @@ export default {
     },
   },
   methods: {
+    ...mapActions("notifier", ["showNotification"]),
     async loadFlashes(filter) {
       const limit = 5000;
 
       this.flashes = [];
       const flashes = await findFlashes(filter);
+
+      if (flashes.length === 0) throw Error("No se encontraron flashes")
+      
       this.total = flashes.length;
 
       if (this.total > limit) {
@@ -110,7 +115,17 @@ export default {
       const { lat, lon, zoom } = this.currentPlace
       this.flyTo(lat, lon, zoom)
 
-      await this.loadFlashes(filter);
+      try {
+        await this.loadFlashes(filter);
+      }catch (err) {
+        this.showNotification({
+          type: "error",
+          message: err.message
+        })
+      }finally{ 
+        this.loading = false
+      }
+      
       this.loading = false;
     },
 

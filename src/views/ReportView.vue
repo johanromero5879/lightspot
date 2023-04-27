@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex"
+
 import Filters from "@/components/Filters.vue"
 import LoaderPanel from "@/components/LoaderPanel.vue"
 import { getReport } from "@/services/flash"
@@ -37,6 +39,7 @@ export default {
         }
     },
     methods: {
+        ...mapActions("notifier", ["showNotification"]),
         onSubmit(filters) {
             this.pdfUrl = null
             this.generatePDF(filters)
@@ -51,7 +54,10 @@ export default {
 
                 this.pdfUrl = url
             }catch(err) {
-                //console.log(err)
+                this.showNotification({
+                    type: "error",
+                    message: err.message
+                })
             } finally {
                 this.loading = false;
             }
