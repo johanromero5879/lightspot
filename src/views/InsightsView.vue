@@ -277,10 +277,16 @@ export default {
   @include up-to-desktop {
     grid-template-columns: repeat(2, 1fr);
 
+    .location {
+      grid-column: 2;
+      grid-row: 1 / 4;
+    }
+
     .months {
       grid-column: 2;
-      grid-row: 3;
+      grid-row: 4;
     }
+    
   }
 
   @include up-to-tablet-portrait {
@@ -309,6 +315,10 @@ export default {
     @include for-big-desktop-up {
       justify-content: space-between;
       align-items: center;
+    }
+
+    @include for-phone-only {
+      justify-content: center;
     }
   }
 
@@ -344,6 +354,7 @@ export default {
 
     .chart {
       max-width: 100%;
+      height: 300px;
     }
   }
 

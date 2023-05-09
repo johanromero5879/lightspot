@@ -180,6 +180,9 @@ export default {
   height: 100%;
   z-index: 0;
 
+  @include up-to-tablet-portrait {
+    height: 400px;
+  }
 
   .card-info {
     position: absolute;
