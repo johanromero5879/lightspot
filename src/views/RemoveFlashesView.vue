@@ -120,10 +120,10 @@ export default {
         this.loading = true;
 
         await removeFlashesLastDay(this.selectedFile)
+        this.files = this.files.filter(file => file !== this.selectedFile)
+
         this.clear()
         
-        await this.fetchFlashes()
-
         this.showNotification({
           message: "Registros del último día eliminados exitosamente",
           type: "success",
@@ -138,9 +138,15 @@ export default {
       }
     },
     clear() {
-      this.files = []
-      this.selectedFile = ""
-      this.flashes = []
+      if (this.files.length == 0) {
+        this.files = []
+        this.selectedFile = ""
+        this.flashes = []
+        return
+      }
+      
+      this.selectedFile = this.files[0]
+      this.flashes = this.flashes.filter(flash => flash.file === this.selectedFile)
     }
   },
   created() {
