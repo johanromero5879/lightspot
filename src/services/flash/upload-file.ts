@@ -16,7 +16,7 @@ export const uploadFile = async (file: File) => {
     return data;
   } catch (error: any) {
     error = getAxiosError(error)
-
+    
     if (!error) throw new Error("Error al subir o procesar el archivo");
     const {status, detail} = error
     

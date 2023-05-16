@@ -7,7 +7,7 @@ export const getAxiosError = (error: any) => {
 
     const {status, data} = error.response;
 
-    if (!(data?.detail instanceof String)) return
+    if (!(typeof data?.detail === "string")) return
     
     return {status, detail: data.detail}
 }

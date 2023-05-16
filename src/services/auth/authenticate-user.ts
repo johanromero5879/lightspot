@@ -1,21 +1,19 @@
-import { AxiosError } from "axios";
+import { getAxiosError } from "@/services/error-handler";
 import apiClient from "@/plugins/api-client";
 
 import { Auth } from "@/models/auth";
-import { Token } from "@/models/token";
 
-export const authenticateUser = async (user: Auth): Promise<Token> => {
+export const authenticateUser = async (user: Auth) => {
   try {
     const { data } = await apiClient.post("/auth/token", user);
     return data;
-  } catch (err: unknown) {
-    if (err instanceof AxiosError) {
-      const {data, status} = err.response!
+  } catch (error: any) {
+    error = getAxiosError(error)
+    if (!error) throw new Error("Error al autenticar usuario");
 
-      if (status === 401) throw new Error("Las credenciales no son validas")
-      if(data?.detail) throw new Error(data.detail)
-    }
-
-    throw new Error("Error al autenticar usuario");
+    const {status, detail} = error
+    
+    if (status === 401) throw new Error("Las credenciales no son validas")
+    if (detail) throw new Error(detail);
   }
 };

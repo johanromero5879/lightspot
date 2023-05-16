@@ -1,19 +1,19 @@
 import { AxiosError } from "axios"
 import apiClient from "@/plugins/api-client"
 
-import { Token } from "@/models/token"
+import { getAxiosError } from "@/services/error-handler";
 
-export const refreshToken = async (): Promise<Token> => {
+export const refreshToken = async () => {
     try {
         const { data } = await apiClient.post("/auth/token/refresh")
 
         return data
-      } catch (err: unknown) {
-        if (err instanceof AxiosError) {
-          const data = err.response?.data;
-          if(data?.detail) throw new Error(data.detail)
-        }
-        
-        throw new Error("Error al autenticar usuario")
+      } catch (error: any) {
+        error = getAxiosError(error)
+        if (!error) throw new Error("Error al autenticar usuario");
+
+        const {status, detail} = error
+
+        if (detail) throw new Error(detail);
       }
 }
