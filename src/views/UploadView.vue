@@ -140,8 +140,8 @@ export default {
     openConfirmDialog() {
       this.openDialog({
         title: "Cargar archivo",
-        message: `El servidor va a filtrar y guardar solo los registros de Colombia. 
-                  Dependiendo de la cantidad que haya, puede tardar varios minutos en cargar los datos.`,
+        message: `El servidor va a filtrar y guardar solo los flashes de Colombia. 
+                  Dependiendo de la cantidad de registros que se encuentren, puede tardar varios minutos en procesar los datos.`,
         confirm: this.handleSubmit,
       });
     },

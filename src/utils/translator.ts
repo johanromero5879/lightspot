@@ -7,11 +7,11 @@ export const translateMonth = (month: string)  => {
     return month;
 }
 
-export const translateTimeofDay = (timeOfDay: string) => {
-    if (timeOfDay === "Early morning") return "Madrugada";
-    if (timeOfDay === "Morning") return "Mañana";
-    if (timeOfDay === "Afternoon") return "Tarde";
-    if (timeOfDay === "Evening") return "Noche";
+export const translatePeriodOfDay = (periodOfDay: string) => {
+    if (periodOfDay === "Early morning") return "Madrugada";
+    if (periodOfDay === "Morning") return "Mañana";
+    if (periodOfDay === "Afternoon") return "Tarde";
+    if (periodOfDay === "Evening") return "Noche";
 
-    return timeOfDay;
+    return periodOfDay;
 }

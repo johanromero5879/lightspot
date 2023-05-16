@@ -28,21 +28,21 @@
           </p>
         </div>
       </v-card>
-      <v-card class="card kpi most-time-of-day">
+      <v-card class="card kpi most-period-of-day">
         <div>
-          <div>Mayor tiempo del día</div>
+          <div>Mayor periodo del día</div>
           <p class="text-h4 text--primary">
-            {{ mostTimeOfDay.name }}
+            {{ mostPeriodOfDay.name }}
           </p>
         </div>
         <div class="card-list">
           <div class="item">
             <v-icon>mdi-counter</v-icon>
-            <p>{{ mostTimeOfDay.total | formatNumberWithPrefix }}</p>
+            <p>{{ mostPeriodOfDay.total | formatNumberWithPrefix }}</p>
           </div>
           <div class="item">
             <v-icon>mdi-chart-arc</v-icon>
-            <p>{{ calcPercent(mostTimeOfDay.total) }}%</p>
+            <p>{{ calcPercent(mostPeriodOfDay.total) }}%</p>
           </div>
         </div>
       </v-card>
@@ -93,12 +93,12 @@
           border-color="rgb(0, 207, 197, 0.8)"
         />
       </v-card>
-      <v-card class="card times-of-day">
+      <v-card class="card periods_of_day">
         <CircleChart
-          title="Ocurrencias por tiempo del día"
+          title="Ocurrencias por periodo del día"
           class="chart"
-          :labels="timesOfDay.labels"
-          :data="timesOfDay.data"
+          :labels="periodsOfDay.labels"
+          :data="periodsOfDay.data"
         />
       </v-card>
     </div>
@@ -122,7 +122,7 @@ import CircleChart from "@/components/CircleChart.vue";
 
 import { getInsights } from "@/services/flash";
 import { formatNumberWithSuffix } from "@/utils/number-formatter";
-import { translateMonth, translateTimeofDay } from "@/utils/translator"
+import { translateMonth, translatePeriodOfDay } from "@/utils/translator"
 
 export default {
   components: {
@@ -143,8 +143,8 @@ export default {
     years: { labels: [], data: [] },
     months: { labels: [], data: [], title: "" },
     hours: { labels: [], data: [] },
-    timesOfDay: { labels: [], data: [] },
-    mostTimeOfDay: { name: "", total: 0 },
+    periodsOfDay: { labels: [], data: [] },
+    mostPeriodOfDay: { name: "", total: 0 },
     location: { labels: [], data: [] },
   }),
   filters: {
@@ -168,20 +168,20 @@ export default {
 
       try {
         const { total, time, location } = await getInsights(filter);
-        const { most_activity, most_time_of_day, years, hours, times_of_day } =
+        const { most_activity, most_period_of_day, years, hours, periods_of_day } =
           time;
 
         // Set KPIs
         most_activity.month = translateMonth(most_activity.month)
         this.mostActivity = most_activity;
 
-        most_time_of_day.name = translateTimeofDay(most_time_of_day.name)
-        this.mostTimeOfDay = most_time_of_day;
+        most_period_of_day.name = translatePeriodOfDay(most_period_of_day.name)
+        this.mostPeriodOfDay = most_period_of_day;
 
         // Set charts
         this.setYearsChart(years);
         this.setHoursChart(hours);
-        this.setTimesOfDayChart(times_of_day);
+        this.setPeriodsOfDayChart(periods_of_day);
         this.setLocationChart(location);
 
         this.total = total;
@@ -230,11 +230,11 @@ export default {
       this.hours.data = Object.values(hours);
     },
 
-    setTimesOfDayChart(timesOfDay) {
-      this.timesOfDay.labels = Object.keys(timesOfDay).map((time) =>
-        translateTimeofDay(time)
+    setPeriodsOfDayChart(periodsOfDay) {
+      this.periodsOfDay.labels = Object.keys(periodsOfDay).map((time) =>
+        translatePeriodOfDay(time)
       );
-      this.timesOfDay.data = Object.values(timesOfDay);
+      this.periodsOfDay.data = Object.values(periodsOfDay);
     },
 
     setLocationChart(location) {
@@ -295,12 +295,12 @@ export default {
 
     .total { order: 1 }
     .most-period { order: 2 }
-    .most-time-of-day { order: 3 }
+    .most-period-of-day { order: 3 }
     .years { order: 4 }
     .months { order: 5 }
     .location { order: 6 }
     .hours { order: 7 }
-    .times-of-day { order: 8 }
+    .periods_of_day { order: 8 }
   }
 
   .kpi {
