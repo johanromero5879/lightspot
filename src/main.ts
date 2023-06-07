@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
+import VueMeta from 'vue-meta';
 import 'leaflet/dist/leaflet.css'
 
 import { Icon } from 'leaflet';
@@ -14,6 +15,7 @@ Icon.Default.mergeOptions({
 });
 
 Vue.config.productionTip = false
+Vue.use(VueMeta)
 
 new Vue({
   router,

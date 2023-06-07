@@ -17,6 +17,21 @@ export default Vue.extend({
     Notification,
     Dialog,
   },
+  data() {
+    return {
+      meta: []
+    }
+  },
+  metaInfo() {
+    const meta = []
+    if (process.env.NODE_ENV === "production") {
+      meta.push({
+        "http-equiv": "Content-Security-Policy",
+        "content": "upgrade-insecure-requests"
+      })
+    }
+    return { meta }
+  }
 });
 </script>
 
